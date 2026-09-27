@@ -1,0 +1,146 @@
+@import 'tailwindcss';
+
+/*
+ * FARO RESTURENT AND COFFE — design tokens
+ * Black & white house style. Each role workspace re-tints the brand tokens (see data-theme below).
+ */
+@theme {
+  --color-ink: #000000;
+  --color-ink-900: #111111;
+  --color-ink-800: #1a1a1a;
+  --color-muted: #666666;
+  --color-surface: #f5f5f5;
+  --color-line: #e5e5e5;
+  --color-paper: #ffffff;
+
+  --color-success: #1f7a4d;
+  --color-warning: #a16207;
+  --color-danger: #b42318;
+
+  /*
+   * Role accent ("brand") — primary buttons, active tabs, badges, the sidebar.
+   * Defaults are the black & white house style; each workspace re-tints them via data-theme (below).
+   */
+  --color-brand: #000000;
+  --color-brand-hover: #1a1a1a;
+  --color-brand-fg: #ffffff;
+  --color-brand-soft: #f2f2f2;
+  --color-brand-ink: #000000;
+  --color-sidebar: #000000;
+  --color-sidebar-active: #ffffff;
+  --color-sidebar-active-fg: #000000;
+  --color-sidebar-accent: #ffffff;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+
+  --radius-card: 16px;
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
+}
+
+/* Horizontal chip rows: still scrollable, without a visible scrollbar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-surface text-ink-900 font-sans;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+/*
+ * Workspace themes — set on <html data-theme="…"> by useWorkspaceTheme().
+ * Every role gets its own colour so each person immediately sees which workspace they are in.
+ */
+@layer base {
+  /* Yönetim — onyx & gold */
+  :root[data-theme='admin'] {
+    --color-brand: #0a0a0a;
+    --color-brand-hover: #2a2a2a;
+    --color-brand-soft: #f6f1e7;
+    --color-brand-ink: #8a6a2f;
+    --color-sidebar: #0a0a0a;
+    --color-sidebar-active: #c9a45c;
+    --color-sidebar-active-fg: #0a0a0a;
+    --color-sidebar-accent: #d8b878;
+  }
+
+  /* Müdür — midnight indigo */
+  :root[data-theme='manager'] {
+    --color-brand: #4338ca;
+    --color-brand-hover: #3730a3;
+    --color-brand-soft: #eef0ff;
+    --color-brand-ink: #4338ca;
+    --color-sidebar: #1e1b4b;
+    --color-sidebar-active: #e0e7ff;
+    --color-sidebar-active-fg: #1e1b4b;
+    --color-sidebar-accent: #a5b4fc;
+  }
+
+  /* Garson — emerald service */
+  :root[data-theme='waiter'] {
+    --color-brand: #047857;
+    --color-brand-hover: #065f46;
+    --color-brand-soft: #eafaf2;
+    --color-brand-ink: #047857;
+    --color-sidebar: #06291f;
+    --color-sidebar-active: #d1fae5;
+    --color-sidebar-active-fg: #064e3b;
+    --color-sidebar-accent: #6ee7b7;
+  }
+
+  /* Kasa — royal plum */
+  :root[data-theme='cashier'] {
+    --color-brand: #6d28d9;
+    --color-brand-hover: #5b21b6;
+    --color-brand-soft: #f4f0ff;
+    --color-brand-ink: #6d28d9;
+    --color-sidebar: #241046;
+    --color-sidebar-active: #ede9fe;
+    --color-sidebar-active-fg: #2e1065;
+    --color-sidebar-accent: #c4b5fd;
+  }
+
+  /* Mutfak — ember */
+  :root[data-theme='kitchen'] {
+    --color-brand: #c2410c;
+    --color-brand-hover: #9a3412;
+    --color-brand-soft: #fff4ea;
+    --color-brand-ink: #c2410c;
+    --color-sidebar: #23120a;
+    --color-sidebar-active: #ffedd5;
+    --color-sidebar-active-fg: #7c2d12;
+    --color-sidebar-accent: #fdba74;
+  }
+
+  /* Müşteri — light sky blue & white */
+  :root[data-theme='customer'] {
+    --color-ink: #0b2a42;
+    --color-ink-900: #0e2c44;
+    --color-ink-800: #164263;
+    --color-muted: #5a7389;
+    --color-surface: #eff8ff;
+    --color-line: #d6e9f7;
+    --color-brand: #0279c2;
+    --color-brand-hover: #03609b;
+    --color-brand-soft: #e0f2fe;
+    --color-brand-ink: #0369a1;
+    --color-sidebar: #0369a1;
+    --color-sidebar-active: #ffffff;
+    --color-sidebar-active-fg: #0369a1;
+    --color-sidebar-accent: #7dd3fc;
+  }
+}
