@@ -1,8 +1,12 @@
 import { networkInterfaces } from 'node:os'
-import { fileURLToPath, URL } from 'node:url'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const srcDir = path.resolve(__dirname, 'src').replace(/\\/g, '/')
 
 const DEV_PORT = 5173
 
@@ -29,7 +33,9 @@ export default defineConfig(({ mode, command }) => {
     base: env.VITE_BASE_PATH || '/',
     plugins: [react(), tailwindcss()],
     resolve: {
-      alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+      alias: [
+        { find: '@', replacement: srcDir },
+      ],
     },
     define: {
       // Development only: base URL encoded in table QR codes when the portal is opened via localhost.
