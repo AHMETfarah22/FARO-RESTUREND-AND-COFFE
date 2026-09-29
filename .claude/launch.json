@@ -12,6 +12,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "frontend"],
       "port": 5173
+    },
+    {
+      "name": "frontend-demo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:demo", "--prefix", "frontend", "--", "--port", "5174"],
+      "port": 5174
+    },
+    {
+      "name": "demo-pages-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview", "--prefix", "frontend", "--", "--base", "/FARO-RESTUREND-AND-COFFE/", "--port", "4173", "--strictPort"],
+      "port": 4173
     }
   ]
 }

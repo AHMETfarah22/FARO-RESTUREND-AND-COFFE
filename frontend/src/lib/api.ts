@@ -49,11 +49,18 @@ export function setUnauthorizedHandler(handler: (() => void) | null) {
   onUnauthorized = handler
 }
 
+/** Called when the API answers 402: this installation has no (valid) license. Set by LicenseGate. */
+let onLicenseRequired: (() => void) | null = null
+export function setLicenseRequiredHandler(handler: (() => void) | null) {
+  onLicenseRequired = handler
+}
+
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     const isAuthCall = error.config?.url?.startsWith('/auth/login') || error.config?.url?.startsWith('/auth/register')
     if (error.response?.status === 401 && !isAuthCall && tokenStore.get()) onUnauthorized?.()
+    if (error.response?.status === 402) onLicenseRequired?.()
     return Promise.reject(error)
   },
 )
@@ -70,6 +77,7 @@ export function getErrorMessage(error: unknown): string {
     // No response, or a proxy/gateway reporting the API is unreachable.
     if (!error.response || [502, 503, 504].includes(error.response.status))
       return translate('Cannot reach the server. Is the API running?', undefined, pageLang())
+    if (error.response.status === 402) return translate('This installation is not activated.', undefined, pageLang())
     if (error.response.status === 403) return translate('You do not have permission to do this.', undefined, pageLang())
     if (error.response.status === 429) return translate('Too many requests. Please wait a moment and try again.', undefined, pageLang())
     const data = error.response.data as ProblemDetails | undefined

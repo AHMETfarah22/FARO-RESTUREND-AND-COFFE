@@ -1,5 +1,6 @@
 import { api } from './api'
 import type {
+  AuthResponse,
   Category,
   Customer,
   CustomerDetail,
@@ -8,6 +9,7 @@ import type {
   InventoryItem,
   InventoryTransaction,
   InventoryTransactionType,
+  LicenseStatus,
   Order,
   OrderItemInput,
   OrderStatus,
@@ -249,4 +251,16 @@ export const reportsApi = {
 export const accountApi = {
   updateProfile: (input: { fullName: string; phone: string | null }) => data(api.put<User>('/auth/profile', input)),
   changePassword: (input: { currentPassword: string; newPassword: string }) => api.post('/auth/change-password', input),
+}
+
+// ---- installation: license activation and first-run setup ------------------------------------------
+export const licenseApi = {
+  status: (signal?: Signal) => data(api.get<LicenseStatus>('/license', { signal })),
+  activate: (key: string) => data(api.post<LicenseStatus>('/license', { key })),
+}
+
+export const setupApi = {
+  status: (signal?: Signal) => data(api.get<{ required: boolean }>('/setup', { signal })),
+  complete: (input: { restaurantName: string; fullName: string; email: string; password: string }) =>
+    data(api.post<AuthResponse>('/setup', input)),
 }

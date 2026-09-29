@@ -1,4 +1,11 @@
-name: Deploy Frontend to GitHub Pages
+name: Deploy demo to GitHub Pages
+
+# Publishes the live demo: the full portal with its API running inside the visitor's browser
+# (frontend/src/demo), so no server or database is needed. Every visitor gets private sample data.
+#
+# One-time setup: repository Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# Optional: Settings → Secrets and variables → Actions → Variables → DEMO_CONTACT_URL
+#           (e.g. https://wa.me/905xxxxxxxxx) shows a "Buy / contact" button in the demo.
 
 on:
   push:
@@ -36,16 +43,17 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Build frontend
+      - name: Build demo
         working-directory: frontend
         env:
-          # If using custom domain, VITE_BASE_PATH can be '/', otherwise GitHub repo name subpath
+          # With a custom domain the site lives at "/", otherwise at "/<repository-name>/".
           VITE_BASE_PATH: ${{ secrets.CUSTOM_DOMAIN != '' && '/' || format('/{0}/', github.event.repository.name) }}
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_DEMO_CONTACT_URL: ${{ vars.DEMO_CONTACT_URL }}
         run: |
-          npm run build
-          # SPA 404 routing fallback for GitHub Pages
+          npm run build:demo
+          # Deep links (e.g. a table's QR menu) are served by the SPA through GitHub Pages' 404 page.
           cp dist/index.html dist/404.html
+          touch dist/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

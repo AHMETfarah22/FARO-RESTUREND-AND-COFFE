@@ -4,22 +4,17 @@ import { Link, useLocation, useNavigate } from 'react-router'
 import { Button } from '@/components/ui/Button'
 import { Field, Input } from '@/components/ui/Form'
 import { Modal } from '@/components/ui/Modal'
+import { isDemo } from '@/config/env'
 import { useAuth } from '@/features/auth/AuthContext'
+import { demoCustomerAccount, testAccounts, type TestAccount } from '@/features/auth/testAccounts'
 import { getErrorMessage } from '@/lib/api'
 import { useI18n } from '@/lib/i18n'
 import { roleLabel } from '@/lib/labels'
 import { homePathFor, workspaceFor, workspaces } from '@/lib/permissions'
-import type { Role } from '@/types/api'
 import { AuthShell } from './AuthShell'
 
-/** Development-only shortcuts; the same accounts are documented in README.md. */
-const demoAccounts: { email: string; password: string; role: Role }[] = [
-  { email: 'admin@example.com', password: 'Admin@12345', role: 'SuperAdmin' },
-  { email: 'manager@example.com', password: 'Manager@12345', role: 'Manager' },
-  { email: 'waiter@example.com', password: 'Waiter@12345', role: 'Waiter' },
-  { email: 'kitchen@example.com', password: 'Kitchen@12345', role: 'Kitchen' },
-  { email: 'cashier@example.com', password: 'Cashier@12345', role: 'Cashier' },
-]
+/** One-click accounts: development shortcuts (they fill the form), and in the demo they sign straight in. */
+const shortcuts: TestAccount[] = isDemo ? [...testAccounts, demoCustomerAccount] : testAccounts
 
 export function LoginPage() {
   const { login } = useAuth()
@@ -33,18 +28,29 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [forgotOpen, setForgotOpen] = useState(false)
 
-  const submit = async (e: FormEvent) => {
-    e.preventDefault()
+  const signIn = async (identifier: string, secret: string) => {
     setError(null)
     setLoading(true)
     try {
-      const user = await login(email.trim(), password)
+      const user = await login(identifier, secret)
       const from = (location.state as { from?: string } | null)?.from
       navigate(from && from !== '/login' ? from : homePathFor(user.roles), { replace: true })
     } catch (err) {
       setError(getErrorMessage(err))
       setLoading(false)
     }
+  }
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault()
+    void signIn(email.trim(), password)
+  }
+
+  const pickShortcut = (a: TestAccount) => {
+    setEmail(a.email)
+    setPassword(a.password)
+    setError(null)
+    if (isDemo) void signIn(a.email, a.password)
   }
 
   return (
@@ -109,20 +115,19 @@ export function LoginPage() {
         </div>
       </form>
 
-      {import.meta.env.DEV && (
+      {(import.meta.env.DEV || isDemo) && (
         <div className="mt-7 border-t border-line pt-5">
-          <p className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">{t('Test accounts · development only')}</p>
+          <p className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
+            {isDemo ? t('Live demo · pick a role to sign in') : t('Test accounts · development only')}
+          </p>
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {demoAccounts.map((a) => (
+            {shortcuts.map((a) => (
               <button
                 key={a.email}
                 type="button"
-                onClick={() => {
-                  setEmail(a.email)
-                  setPassword(a.password)
-                  setError(null)
-                }}
-                className="rounded-xl border border-line px-3 py-2 text-left text-xs hover:border-ink"
+                onClick={() => pickShortcut(a)}
+                disabled={loading}
+                className="rounded-xl border border-line px-3 py-2 text-left text-xs hover:border-ink disabled:opacity-60"
                 style={{ borderLeft: `3px solid ${workspaces[workspaceFor([a.role])].accent}` }}
               >
                 <span className="block font-semibold text-ink">{roleLabel(a.role)}</span>

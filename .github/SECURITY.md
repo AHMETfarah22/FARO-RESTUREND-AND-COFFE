@@ -5,6 +5,7 @@ If you discover any security vulnerabilities, please do not open a public issue.
 
 ## Security Architecture & Best Practices
 1. **Never commit `.env` files**: All local secrets, database passwords, and JWT secret keys must remain in `.env` files which are excluded via `.gitignore`.
+   The license signing key lives outside the repository (`%USERPROFILE%\.faro-license`); only its public half is in the code.
 2. **Production Secrets**: Use secure environment variables or a secrets manager (e.g., GitHub Secrets, Azure Key Vault, Render Environment Variables).
 3. **Database Security**:
    - Connection strings must be parameterized through environment variables (`ConnectionStrings__DefaultConnection`).

@@ -390,6 +390,18 @@ export interface PublicOrderStatus {
   items: OrderItem[]
 }
 
+export type LicenseState = 'Active' | 'Missing' | 'Invalid' | 'Expired' | 'OtherMachine'
+
+/** GET /api/license — the machine code is what the customer sends to the seller for a license key. */
+export interface LicenseStatus {
+  status: LicenseState
+  machineCode: string
+  customer: string | null
+  licenseId: string | null
+  issuedOn: string | null
+  expiresOn: string | null
+}
+
 export interface SystemHealth {
   application: string
   status: 'Healthy' | 'Degraded'

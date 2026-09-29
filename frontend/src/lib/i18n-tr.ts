@@ -161,6 +161,7 @@ export const tr: Record<string, string> = {
   'Payment was declined.': 'Ödeme reddedildi.',
   'Card declined (simulated failure).': 'Kart reddedildi (test amaçlı hata).',
   'Your portal is ready. Test data has been loaded for this development environment.': 'Portalınız hazır. Bu geliştirme ortamı için test verileri yüklendi.',
+  'Your portal is ready. This is a demo: the sample data is kept only in your browser.': 'Portalınız hazır. Bu bir demodur: örnek veriler yalnızca sizin tarayıcınızda tutulur.',
 
   // ---- receipt
   Order: 'Sipariş',
@@ -187,7 +188,49 @@ export const tr: Record<string, string> = {
   LOGIN: 'GİRİŞ YAP',
   'Forgot password?': 'Şifrenizi mi unuttunuz?',
   'Test accounts · development only': 'Test hesapları · sadece geliştirme',
+  'Live demo · pick a role to sign in': 'Canlı demo · giriş için bir rol seçin',
   'Forgot your password?': 'Şifrenizi mi unuttunuz?',
+
+  // ---- installation: license activation & first-run setup
+  'This installation is not activated.': 'Bu kurulum etkinleştirilmemiş.',
+  'Activate FARO': "FARO'yu etkinleştirin",
+  'This computer needs a license key before the portal can be used.': 'Portalın kullanılabilmesi için bu bilgisayara bir lisans anahtarı girilmelidir.',
+  'Machine code': 'Makine kodu',
+  'Send this code to your FARO provider. You will receive a license key for this computer.':
+    'Bu kodu FARO sağlayıcınıza gönderin. Size bu bilgisayara özel bir lisans anahtarı gönderilecek.',
+  Copy: 'Kopyala',
+  Copied: 'Kopyalandı',
+  'License key': 'Lisans anahtarı',
+  'Paste the key you received (FARO1…)': 'Size gönderilen anahtarı yapıştırın (FARO1…)',
+  Activate: 'Etkinleştir',
+  'License activated': 'Lisans etkinleştirildi',
+  'The installed license expired on {date}. Ask for a new key.': 'Yüklü lisansın süresi {date} tarihinde doldu. Yeni bir anahtar isteyin.',
+  'The installed license belongs to another computer.': 'Yüklü lisans başka bir bilgisayara ait.',
+  'The license file is damaged. Enter the key again.': 'Lisans dosyası bozuk. Anahtarı yeniden girin.',
+  'The menu is temporarily unavailable. Please ask a waiter.': 'Menü geçici olarak kullanılamıyor. Lütfen garsondan yardım isteyin.',
+  'Welcome! Set up your restaurant': 'Hoş geldiniz! Restoranınızı kurun',
+  'Create the administrator account. You can add your staff afterwards from Staff Management.':
+    "Yönetici hesabını oluşturun. Personelinizi daha sonra Personel Yönetimi'nden ekleyebilirsiniz.",
+  'Restaurant name': 'Restoran adı',
+  'You sign in with this address.': 'Giriş yaparken bu adresi kullanacaksınız.',
+  'Create administrator and start': 'Yöneticiyi oluştur ve başla',
+  License: 'Lisans',
+  'Licensed to {name}': '{name} adına lisanslı',
+  'no expiry': 'süresiz',
+  'until {date}': '{date} tarihine kadar',
+
+  // ---- demo (GitHub Pages build)
+  'Live demo': 'Canlı demo',
+  'Every feature works. Your changes are kept only in this browser, and new sample data is loaded every day.':
+    'Tüm özellikler çalışır. Değişiklikleriniz yalnızca bu tarayıcıda saklanır ve her gün yeni örnek veriler yüklenir.',
+  'Try another role': 'Başka bir rolü deneyin',
+  'Open the customer QR menu': 'Müşteri QR menüsünü aç',
+  'Opens in a new tab — orders placed there appear here live.': 'Yeni sekmede açılır — orada verilen siparişler burada canlı görünür.',
+  'Reset demo data': 'Demo verilerini sıfırla',
+  'Reset demo data?': 'Demo verileri sıfırlansın mı?',
+  'All changes made in this browser are removed and fresh sample data is loaded.': 'Bu tarayıcıda yapılan tüm değişiklikler silinir ve yeni örnek veriler yüklenir.',
+  Reset: 'Sıfırla',
+  'Buy / contact': 'Satın al / İletişim',
   'Got it': 'Anladım',
   'For security, staff passwords are reset by a manager or administrator from Staff Management. Please contact your manager to receive a new temporary password.':
     'Güvenlik için personel şifreleri, Personel Yönetimi sayfasından bir müdür veya yönetici tarafından sıfırlanır. Yeni geçici şifre için lütfen müdürünüzle iletişime geçin.',

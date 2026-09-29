@@ -12,16 +12,16 @@ export function isLocalOnly(url: string) {
 }
 
 /**
- * Origin encoded in QR codes, in order of preference:
+ * Base address encoded in QR codes, in order of preference:
  * 1. the public base URL from Settings → QR,
  * 2. in development, this computer's network address when the portal is opened via localhost,
- * 3. the address the portal is currently opened with.
+ * 3. the address the portal is currently opened with (including a sub-path such as GitHub Pages' /repo-name).
  */
 export function publicOrigin(restaurant: Restaurant | null) {
   const configured = restaurant?.settings.qrMenuBaseUrl?.trim().replace(/\/$/, '')
   if (configured) return configured
   if (LOCAL_HOSTS.includes(window.location.hostname) && import.meta.env.VITE_LAN_ORIGIN) return import.meta.env.VITE_LAN_ORIGIN
-  return window.location.origin
+  return window.location.origin + import.meta.env.BASE_URL.replace(/\/$/, '')
 }
 
 /** Public QR-menu URL for a table. */

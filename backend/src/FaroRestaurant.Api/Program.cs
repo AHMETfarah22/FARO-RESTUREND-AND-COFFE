@@ -27,19 +27,36 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options => options.WithTitle("FARO RESTURENT AND COFFE API"));
 }
-else
+// Off for an installation on the restaurant's own network, which is reached over plain http://<computer>:5080.
+else if (app.Configuration.GetValue("App:HttpsRedirection", true))
 {
     app.UseHsts();
     app.UseHttpsRedirection();
 }
 
+// Installed package: the built portal (frontend/dist) is in wwwroot and served on the same address as the API.
+var servesPortal = File.Exists(Path.Combine(app.Environment.WebRootPath ?? "wwwroot", "index.html"));
+if (servesPortal)
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+}
+
 app.UseCors(ApiServiceExtensions.CorsPolicy);
+app.UseMiddleware<LicenseMiddleware>();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<RestaurantHub>(RestaurantHub.Path);
+
+if (servesPortal)
+{
+    // Portal routes (/dashboard, /menu/table/…) load the single-page app; unknown API paths stay 404.
+    app.MapFallback("/api/{**path}", () => Results.NotFound());
+    app.MapFallbackToFile("{*path:nonfile}", "index.html");
+}
 
 if (app.Configuration.GetValue("Database:MigrateOnStartup", false))
     await app.Services.InitializeDatabaseAsync(seed: app.Configuration.GetValue("Database:SeedOnStartup", false));

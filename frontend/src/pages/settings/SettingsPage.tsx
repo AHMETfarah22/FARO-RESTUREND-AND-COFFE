@@ -8,13 +8,15 @@ import { Checkbox, Field, Input, Switch } from '@/components/ui/Form'
 import { DataTable, PageHeader, td, th } from '@/components/ui/Layout'
 import { AsyncBlock, LoadingState } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
+import { isDemo } from '@/config/env'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useRestaurant } from '@/features/restaurant/RestaurantContext'
 import { useAsync } from '@/hooks/useAsync'
 import { getErrorMessage, getFieldErrors } from '@/lib/api'
 import { cn } from '@/lib/cn'
-import { accountApi, restaurantApi } from '@/lib/endpoints'
-import { formatDateTime } from '@/lib/format'
+import { accountApi, licenseApi, restaurantApi } from '@/lib/endpoints'
+import { formatDateOnly, formatDateTime } from '@/lib/format'
+import { useI18n } from '@/lib/i18n'
 import { roleLabel } from '@/lib/labels'
 import { permissions, type Permission } from '@/lib/permissions'
 import type { PaymentMethod, RestaurantSettings, Role } from '@/types/api'
@@ -364,6 +366,15 @@ function OperationalSection({ kind }: { kind: 'orders' | 'notifications' | 'qr' 
 
 function SystemSection() {
   const { data, error, loading, reload } = useAsync((signal) => restaurantApi.health(signal))
+  // The demo has no license; a real installation shows who it is licensed to and this computer's code.
+  const { data: license } = useAsync((signal) => (isDemo ? Promise.resolve(null) : licenseApi.status(signal)))
+  const { t } = useI18n()
+  const licenseText = isDemo
+    ? 'Demo'
+    : license?.status === 'Active'
+      ? `${t('Licensed to {name}', { name: license.customer ?? '—' })} · ${license.licenseId} · ${license.expiresOn ? t('until {date}', { date: formatDateOnly(license.expiresOn) }) : t('no expiry')}`
+      : (license?.status ?? '—')
+
   return (
     <Card>
       <CardHeader title="System" description="Environment and service health." action={<Button variant="secondary" size="sm" onClick={reload} loading={loading}>Refresh</Button>} />
@@ -373,6 +384,8 @@ function SystemSection() {
             {[
               ['Application', h.application],
               ['Status', <Badge key="s" tone={h.status === 'Healthy' ? 'success' : 'warning'}>{h.status}</Badge>],
+              [t('License'), licenseText],
+              ...(license ? [[t('Machine code'), <span key="m" className="font-mono">{license.machineCode}</span>]] : []),
               ['Environment', h.environment],
               ['Database', `${h.database.provider} ${h.database.serverVersion ?? ''} · ${h.database.connected ? 'connected' : 'disconnected'}`],
               ['Pending migrations', h.database.pendingMigrations],

@@ -1,5 +1,9 @@
-/* FARO RESTURENT AND COFFE — customer service worker (scope /menu/).
+/* FARO RESTURENT AND COFFE — customer service worker (scope <base>/menu/).
  * Shows "order ready" push notifications even when the menu page is closed or the phone is locked. */
+
+/* The portal may live in a sub-folder (e.g. GitHub Pages' /repo-name/), so paths are derived from the scope. */
+const MENU = self.registration.scope // …/menu/
+const BASE = MENU.replace(/menu\/$/, '')
 
 self.addEventListener('install', () => self.skipWaiting())
 self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim()))
@@ -28,13 +32,13 @@ async function show(data) {
 
   await self.registration.showNotification(title, {
     body,
-    icon: '/icons/icon-192.png',
-    badge: '/icons/badge-96.png',
+    icon: BASE + 'icons/icon-192.png',
+    badge: BASE + 'icons/badge-96.png',
     tag: data.tag,
     renotify: true,
     vibrate: [300, 100, 300, 100, 300],
     requireInteraction: data.status === 'Ready',
-    data: { url: data.url || '/menu/orders' },
+    data: { url: data.url || MENU + 'orders' },
   })
 }
 
@@ -50,13 +54,13 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
-  const url = new URL((event.notification.data && event.notification.data.url) || '/menu/orders', self.location.origin).href
+  const url = new URL((event.notification.data && event.notification.data.url) || MENU + 'orders', self.location.origin).href
 
   event.waitUntil(
     (async () => {
       const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
       for (const client of windows) {
-        if (client.url.startsWith(self.location.origin + '/menu')) {
+        if (client.url.startsWith(MENU)) {
           await client.focus()
           if ('navigate' in client) await client.navigate(url)
           return

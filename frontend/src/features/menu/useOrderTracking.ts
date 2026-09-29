@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { HubConnectionBuilder, HubConnectionState, LogLevel } from '@microsoft/signalr'
-import { HUB_URL } from '@/features/realtime/RealtimeContext'
+import { HubConnectionState } from '@microsoft/signalr'
+import { createHub } from '@/features/realtime/hub'
 
 /**
  * Anonymous SignalR subscription for the QR-menu customer: joins the group of each tracked order
@@ -16,7 +16,7 @@ export function useOrderTracking(orderIds: string[], onChange: (orderId: string)
   useEffect(() => {
     if (!key) return
     const ids = key.split(',')
-    const hub = new HubConnectionBuilder().withUrl(HUB_URL).withAutomaticReconnect().configureLogging(LogLevel.None).build()
+    const hub = createHub('guest')
 
     const join = () => Promise.all(ids.map((id) => hub.invoke('TrackOrder', id))).catch(() => undefined)
     hub.on('orderStatus', (payload: { id: string }) => onChangeRef.current(payload.id))

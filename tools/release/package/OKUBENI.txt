@@ -1,0 +1,56 @@
+﻿FARO RESTURENT AND COFFE — Kurulum ve Kullanım
+================================================
+
+GEREKENLER
+- Windows 10 veya 11 (64 bit) bir bilgisayar (restoranın "sunucu" bilgisayarı)
+- PostgreSQL 15 veya üzeri: https://www.postgresql.org/download/windows/
+  Kurulumda "postgres" kullanıcısı için bir şifre belirleyin; FARO ilk açılışta bu şifreyi sorar.
+  (Şifrede ' tek tırnak karakteri kullanmayın.)
+
+İLK KURULUM
+1. Bu klasörü bilgisayara kopyalayın, örneğin C:\FARO
+   Program Files içine koymayın: program ayar ve lisans dosyasını bu klasöre yazar.
+2. FARO-Baslat.cmd dosyasına çift tıklayın.
+3. PostgreSQL şifresini girin (yalnızca bir kez sorulur).
+4. Windows Güvenlik Duvarı sorarsa "Özel ağlar" için İzin ver'e tıklayın
+   (telefon ve tabletlerin bağlanabilmesi için gerekli).
+5. Tarayıcıda "FARO'yu etkinleştirin" ekranı açılır.
+   Ekrandaki MAKİNE KODUNU (XXXX-XXXX-XXXX-XXXX) satıcınıza gönderin.
+6. Size gönderilen LİSANS ANAHTARINI yapıştırıp "Etkinleştir"e basın.
+7. Restoran adını girip yönetici hesabınızı oluşturun. Kurulum tamam.
+   Personeli (garson, mutfak, kasiyer, müdür) Personel sayfasından ekleyin.
+
+GÜNLÜK KULLANIM
+- FARO-Baslat.cmd ile başlatın. Açılan siyah pencereyi KAPATMAYIN, küçültebilirsiniz.
+  Pencere kapanırsa sistem durur.
+- Bu bilgisayarda: http://localhost:5080
+- Telefon ve tabletler (aynı Wi-Fi ağında): başlatma penceresinde yazan
+  "Telefon / tablet" adresi, örneğin http://192.168.1.20:5080
+- Masa QR kodlarının telefonlarda açılması için bir kez:
+  Ayarlar → QR ayarları → "Genel QR menü adresi" alanına bu adresi yazın
+  (ör. http://192.168.1.20:5080), sonra QR kodlarını yazdırın.
+  İpucu: Modem ayarlarından bu bilgisayara sabit IP verin; adres değişirse QR kodları çalışmaz.
+
+BİLGİSAYAR AÇILINCA OTOMATİK BAŞLASIN
+- Windows + R tuşlarına basın, shell:startup yazıp Enter'a basın.
+- Açılan klasöre FARO-Baslat.cmd dosyasının KISAYOLUNU koyun
+  (FARO-Baslat.cmd'ye sağ tıklayın → Kısayol oluştur → kısayolu bu klasöre taşıyın).
+
+YEDEKLEME (önemli)
+- Tüm veriler PostgreSQL veritabanındadır (faro_restaurant). Düzenli yedek alın. Komut İstemi'nde:
+  "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe" -U postgres -F c -f C:\FARO\yedek.dump faro_restaurant
+  (18 yerine kurulu PostgreSQL sürüm numaranızı yazın.)
+- Bu klasördeki "lisans.key" (lisans) ve ".env" (ayarlar) dosyalarını da saklayın.
+
+GÜNCELLEME
+- Yeni sürümde yalnızca "app" klasörünü değiştirin. ".env" ve "lisans.key" olduğu gibi kalır,
+  veritabanı açılışta otomatik güncellenir.
+
+SORUN GİDERME
+- "Sunucuya ulaşılamıyor": siyah pencere kapanmış. FARO-Baslat.cmd ile yeniden başlatın.
+- Pencere hata verip duruyor (veritabanı bağlantısı): ".env" dosyasını Not Defteri ile açın ve
+  Password=... kısmındaki PostgreSQL şifresini düzeltin. PostgreSQL hizmetinin çalıştığından emin olun.
+- Telefon bağlanamıyor: telefon aynı Wi-Fi'da mı? Güvenlik duvarı izni verildi mi?
+  Misafir / halka açık Wi-Fi ağları cihazların birbirini görmesini engelleyebilir.
+- Aktivasyon ekranı yeniden çıktı: lisans süresi dolmuş ya da bilgisayar değişmiş olabilir.
+  Ekrandaki makine kodunu satıcınıza gönderip yeni anahtar isteyin.

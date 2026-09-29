@@ -8,8 +8,10 @@ import { api } from '@/lib/api'
  * - Everywhere else the order page alerts in-page (overlay, vibration, sound) while it is open.
  */
 
-const SW_URL = '/sw.js'
-const SW_SCOPE = '/menu/'
+/** '/' or the sub-path the portal is served from (e.g. GitHub Pages' /repo-name/). */
+const BASE = import.meta.env.BASE_URL
+const SW_URL = `${BASE}sw.js`
+const SW_SCOPE = `${BASE}menu/`
 
 export type PushSupport = 'supported' | 'insecure' | 'unsupported'
 
@@ -28,7 +30,7 @@ export function addCustomerManifest() {
   if (document.querySelector('link[rel="manifest"]')) return
   const link = document.createElement('link')
   link.rel = 'manifest'
-  link.href = '/menu.webmanifest'
+  link.href = `${BASE}menu.webmanifest`
   document.head.appendChild(link)
 }
 
@@ -116,7 +118,13 @@ export async function showLocalNotification(title: string, body: string, tag: st
   if (pushSupport() !== 'supported' || Notification.permission !== 'granted') return
   try {
     const reg = await registration()
-    await reg.showNotification(title, { body, tag, icon: '/icons/icon-192.png', badge: '/icons/badge-96.png', data: { url: '/menu/orders' } })
+    await reg.showNotification(title, {
+      body,
+      tag,
+      icon: `${BASE}icons/icon-192.png`,
+      badge: `${BASE}icons/badge-96.png`,
+      data: { url: `${BASE}menu/orders` },
+    })
   } catch {
     /* ignore */
   }

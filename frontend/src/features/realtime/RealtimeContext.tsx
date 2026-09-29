@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
-import { HubConnectionBuilder, HubConnectionState, LogLevel, type HubConnection } from '@microsoft/signalr'
-import { env } from '@/config/env'
-import { tokenStore } from '@/lib/api'
+import { HubConnectionState, type HubConnection } from '@microsoft/signalr'
+import { createHub } from './hub'
 
 export type RealtimeStatus = 'connecting' | 'connected' | 'reconnecting' | 'disconnected'
 
@@ -11,8 +10,6 @@ interface RealtimeState {
 }
 
 const RealtimeContext = createContext<RealtimeState>({ connection: null, status: 'disconnected' })
-
-export const HUB_URL = `${env.apiBaseUrl}/hubs/restaurant`
 
 /**
  * One SignalR connection per signed-in session. Staff are placed in their restaurant group by the
@@ -25,11 +22,7 @@ export function RealtimeProvider({ enabled, children }: { enabled: boolean; chil
   useEffect(() => {
     if (!enabled) return
 
-    const hub = new HubConnectionBuilder()
-      .withUrl(HUB_URL, { accessTokenFactory: () => tokenStore.get() ?? '' })
-      .withAutomaticReconnect([0, 2000, 5000, 10000, 20000, 30000])
-      .configureLogging(LogLevel.Warning)
-      .build()
+    const hub = createHub('staff')
 
     let cancelled = false
     // Ignore events from a connection that is being replaced (e.g. its late onclose after a remount).

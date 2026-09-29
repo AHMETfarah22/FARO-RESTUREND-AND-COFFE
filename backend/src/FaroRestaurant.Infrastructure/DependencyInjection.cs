@@ -1,7 +1,10 @@
 using FaroRestaurant.Application.Auth;
 using FaroRestaurant.Application.Common.Interfaces;
 using FaroRestaurant.Application.Health;
+using FaroRestaurant.Application.Licensing;
+using FaroRestaurant.Application.Setup;
 using FaroRestaurant.Infrastructure.Identity;
+using FaroRestaurant.Infrastructure.Licensing;
 using FaroRestaurant.Infrastructure.Notifications;
 using FaroRestaurant.Infrastructure.Payments;
 using FaroRestaurant.Infrastructure.Persistence;
@@ -65,8 +68,12 @@ public static class DependencyInjection
         services.AddSingleton<IReportExporter, ReportExporter>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ISetupService, SetupService>();
         services.AddScoped<DbSeeder>();
         services.AddScoped<ISystemHealthService, SystemHealthService>();
+
+        services.Configure<LicenseOptions>(configuration.GetSection(LicenseOptions.SectionName));
+        services.AddSingleton<ILicenseService, LicenseService>();
 
         return services;
     }

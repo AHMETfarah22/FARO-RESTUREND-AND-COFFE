@@ -56,3 +56,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Customer installation packages (paket-olustur.cmd)
+/release/
