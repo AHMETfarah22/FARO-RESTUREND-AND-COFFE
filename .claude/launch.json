@@ -22,7 +22,7 @@
     {
       "name": "demo-pages-preview",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "preview", "--prefix", "frontend", "--", "--base", "/FARO-RESTUREND-AND-COFFE/", "--port", "4173", "--strictPort"],
+      "runtimeArgs": ["run", "preview", "--prefix", "frontend", "--", "--base", "/faro-demo/", "--port", "4173", "--strictPort"],
       "port": 4173
     }
   ]

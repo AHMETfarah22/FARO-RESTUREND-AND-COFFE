@@ -1,0 +1,57 @@
+name: Build check
+
+# This repository is private. The public live demo is published to the separate "faro-demo"
+# repository with demo-yayinla.cmd (tools/demo/publish-demo.mjs); this workflow only checks that
+# the portal, the demo and the API build.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build portal and demo
+        run: |
+          npm run build
+          npm run build:demo
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build API
+        run: dotnet build backend/FaroRestaurant.sln -c Release

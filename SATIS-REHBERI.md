@@ -7,6 +7,8 @@ kurmak ve **sizin onayınızla** (lisans anahtarı) çalışır hale getirmek.
 
 ## 1. Demo linki — müşterilere gönderin
 
+**Link: https://ahmetfarah22.github.io/faro-demo/**
+
 Demo, GitHub Pages üzerinde **ücretsiz** yayınlanır ve hiçbir kurulum gerektirmez. Müşteri linki telefonda veya
 bilgisayarda açar, "Canlı demo" bölümünden bir rol seçer (Yönetici, Müdür, Garson, Mutfak, Kasiyer, Müşteri) ve
 tek tıkla sisteme girer.
@@ -16,9 +18,14 @@ tek tıkla sisteme girer.
 - Sağ alttaki **DEMO** düğmesi: rol değiştir, müşteri QR menüsünü aç, demoyu sıfırla.
 - Etkileyici gösterim: DEMO → "Müşteri QR menüsünü aç" (yeni sekme) ile sipariş verin; mutfak ekranına **anında** düşer.
 
-**İletişim / Satın al düğmesi (isteğe bağlı):** GitHub'da depo → Settings → Secrets and variables → Actions →
-Variables → New variable: ad `DEMO_CONTACT_URL`, değer örneğin `https://wa.me/905xxxxxxxxx`. Sonraki yayında demoda
-"Satın al / İletişim" düğmesi çıkar.
+**Kaynak kodunuz gizlidir.** Kod gizli `FARO-RESTUREND-AND-COFFE` deposunda durur; herkese açık `faro-demo` deposunda
+yalnızca demonun derlenmiş dosyaları bulunur.
+
+**Demoyu güncellemek:** Sistemde bir değişiklik yaptıktan sonra **`demo-yayinla.cmd`** dosyasına çift tıklayın.
+Demo derlenir ve `faro-demo` deposuna gönderilir; link birkaç dakika içinde güncellenir.
+
+**İletişim / Satın al düğmesi (isteğe bağlı):** Demoda WhatsApp veya e-posta düğmesi göstermek isterseniz
+`demo-yayinla.cmd --contact https://wa.me/905xxxxxxxxx` şeklinde çalıştırın (ya da Claude'a numaranızı söyleyin).
 
 ---
 
@@ -75,8 +82,10 @@ Başka bir bilgisayarda geliştirirseniz, orada çıkan makine kodu için `lisan
 
 ## 7. Sınırlamalar ve öneriler
 
-- **Kaynak kod herkese açık GitHub deposunda durduğu sürece**, bilgili biri kodu indirip lisans kontrolünü
-  kaldırabilir. Satış için kodun **gizli (private)** bir depoda tutulması ve demonun ayrı bir depodan yayınlanması önerilir.
+- **Kaynak kod deposunu gizli (private) tutun.** Kod herkese açık olursa bilgili biri indirip lisans kontrolünü
+  kaldırabilir. (Depo daha önce birkaç gün herkese açıktı; o sürede eski sürümü indiren olmuş olabilir. Yeni
+  eklenen lisans sistemi ve sonraki tüm geliştirmeler yalnızca gizli depodadır.)
+- Müşteriye her zaman `paket-olustur.cmd` ile hazırlanan **derlenmiş paketi** verin, kaynak kodu değil.
 - Tarayıcı demosunda her cihazın verisi ayrıdır: telefonda verilen demo sipariş bilgisayardaki demoda görünmez.
   Gerçek kurulumda tüm cihazlar aynı sunucuya bağlanır ve her şey canlı görünür.
 - Telefon bildirimleri (ekran kapalıyken) HTTPS gerektirir; restoranın yerel ağında sayfa açıkken sesli ve titreşimli
