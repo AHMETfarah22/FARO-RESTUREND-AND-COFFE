@@ -5,15 +5,17 @@ import { Card, CardHeader } from '@/components/ui/Card'
 import { PageHeader } from '@/components/ui/Layout'
 import { LoadingState } from '@/components/ui/States'
 import { useRestaurant } from '@/features/restaurant/RestaurantContext'
+import { useI18n } from '@/lib/i18n'
 import { RestaurantForm } from './RestaurantForm'
 
 export function RestaurantPage() {
   const { restaurant } = useRestaurant()
+  const { t } = useI18n()
   if (!restaurant) return <LoadingState />
 
   return (
     <>
-      <PageHeader title="Restaurant" description="Your restaurant's public information, opening hours, currency and tax." />
+      <PageHeader title={t('Restaurant')} description={t("Your restaurant's public information, opening hours, currency and tax.")} />
       <div className="grid gap-4 xl:grid-cols-3">
         <Card className="overflow-hidden">
           <CoverHero image={restaurant.coverImageUrl} width={800} className="flex flex-col items-center px-6 py-14">
@@ -24,17 +26,17 @@ export function RestaurantPage() {
             )}
           </CoverHero>
           <ul className="space-y-4 p-6 text-sm">
-            <Info icon={<Phone className="size-4" />} label="Phone" value={restaurant.phone} />
-            <Info icon={<Mail className="size-4" />} label="Email" value={restaurant.email} />
-            <Info icon={<MapPin className="size-4" />} label="Address" value={restaurant.address} />
-            <Info icon={<Clock className="size-4" />} label="Opening hours" value={`${restaurant.openingTime} – ${restaurant.closingTime}`} />
-            <Info icon={<Percent className="size-4" />} label="Tax · Currency" value={`${restaurant.taxRate}% · ${restaurant.currency}`} />
+            <Info icon={<Phone className="size-4" />} label={t('Phone')} value={restaurant.phone} />
+            <Info icon={<Mail className="size-4" />} label={t('Email')} value={restaurant.email} />
+            <Info icon={<MapPin className="size-4" />} label={t('Address')} value={restaurant.address} />
+            <Info icon={<Clock className="size-4" />} label={t('Opening hours')} value={`${restaurant.openingTime} – ${restaurant.closingTime}`} />
+            <Info icon={<Percent className="size-4" />} label={t('Tax · Currency')} value={`${restaurant.taxRate}% · ${restaurant.currency}`} />
           </ul>
           {restaurant.description && <p className="border-t border-line px-6 py-5 text-sm text-muted">{restaurant.description}</p>}
         </Card>
 
         <Card className="xl:col-span-2">
-          <CardHeader title="Restaurant information" description="Changes apply immediately across the portal and QR menu." />
+          <CardHeader title={t('Restaurant information')} description={t('Changes apply immediately across the portal and QR menu.')} />
           <div className="p-6">
             <RestaurantForm key={restaurant.id} restaurant={restaurant} />
           </div>

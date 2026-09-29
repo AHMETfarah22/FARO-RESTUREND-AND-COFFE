@@ -6,6 +6,7 @@ import { useToast } from '@/components/ui/Toast'
 import { useRestaurant } from '@/features/restaurant/RestaurantContext'
 import { getErrorMessage, getFieldErrors } from '@/lib/api'
 import { restaurantApi, type RestaurantInput } from '@/lib/endpoints'
+import { useI18n } from '@/lib/i18n'
 import { sizedImage } from '@/lib/images'
 import type { Restaurant } from '@/types/api'
 
@@ -16,6 +17,7 @@ type Section = 'all' | 'tax'
 /** Edits restaurant information. `section="tax"` shows only tax & currency (used in Settings). */
 export function RestaurantForm({ restaurant, section = 'all', disabled }: { restaurant: Restaurant; section?: Section; disabled?: boolean }) {
   const toast = useToast()
+  const { t } = useI18n()
   const { setRestaurant } = useRestaurant()
   const [form, setForm] = useState<RestaurantInput>({
     name: restaurant.name,
@@ -44,10 +46,10 @@ export function RestaurantForm({ restaurant, section = 'all', disabled }: { rest
     try {
       const updated = await restaurantApi.update(restaurant.id, { ...form, name: form.name.trim() })
       setRestaurant(updated)
-      toast.success('Restaurant updated')
+      toast.success(t('Restaurant updated'))
     } catch (err) {
       setErrors(getFieldErrors(err))
-      toast.error('Could not save', getErrorMessage(err))
+      toast.error(t('Could not save'), getErrorMessage(err))
     } finally {
       setSaving(false)
     }
@@ -59,38 +61,38 @@ export function RestaurantForm({ restaurant, section = 'all', disabled }: { rest
         {section === 'all' && (
           <>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Restaurant name" error={errors.name} required className="sm:col-span-2">
+              <Field label={t('Restaurant name')} error={errors.name} required className="sm:col-span-2">
                 {(id) => <Input id={id} value={form.name} onChange={(e) => set('name', e.target.value)} invalid={!!errors.name} />}
               </Field>
-              <Field label="Phone" error={errors.phone}>
+              <Field label={t('Phone')} error={errors.phone}>
                 {(id) => <Input id={id} type="tel" value={form.phone ?? ''} onChange={text('phone')} />}
               </Field>
-              <Field label="Email" error={errors.email}>
+              <Field label={t('Email')} error={errors.email}>
                 {(id) => <Input id={id} type="email" value={form.email ?? ''} onChange={text('email')} invalid={!!errors.email} />}
               </Field>
-              <Field label="Address" error={errors.address} className="sm:col-span-2">
+              <Field label={t('Address')} error={errors.address} className="sm:col-span-2">
                 {(id) => <Input id={id} value={form.address ?? ''} onChange={text('address')} />}
               </Field>
-              <Field label="Opening time" error={errors.openingTime}>
+              <Field label={t('Opening time')} error={errors.openingTime}>
                 {(id) => <Input id={id} type="time" value={form.openingTime} onChange={(e) => set('openingTime', e.target.value)} />}
               </Field>
-              <Field label="Closing time" error={errors.closingTime}>
+              <Field label={t('Closing time')} error={errors.closingTime}>
                 {(id) => <Input id={id} type="time" value={form.closingTime} onChange={(e) => set('closingTime', e.target.value)} />}
               </Field>
-              <Field label="Logo URL" hint="Optional. The text logo is used when empty." error={errors.logoUrl} className="sm:col-span-2">
+              <Field label={t('Logo URL')} hint={t('Optional. The text logo is used when empty.')} error={errors.logoUrl} className="sm:col-span-2">
                 {(id) => <Input id={id} type="url" value={form.logoUrl ?? ''} onChange={text('logoUrl')} placeholder="https://…" />}
               </Field>
-              <Field label="Cover photo URL" hint="Wide photo shown on the QR menu, login page and dashboard." error={errors.coverImageUrl} className="sm:col-span-2">
+              <Field label={t('Cover photo URL')} hint={t('Wide photo shown on the QR menu, login page and dashboard.')} error={errors.coverImageUrl} className="sm:col-span-2">
                 {(id) => (
                   <div className="space-y-3">
                     <Input id={id} type="url" value={form.coverImageUrl ?? ''} onChange={text('coverImageUrl')} placeholder="https://…" invalid={!!errors.coverImageUrl} />
                     {form.coverImageUrl && (
-                      <img src={sizedImage(form.coverImageUrl, 800) ?? form.coverImageUrl} alt="Cover preview" className="aspect-[3/1] w-full rounded-xl object-cover" />
+                      <img src={sizedImage(form.coverImageUrl, 800) ?? form.coverImageUrl} alt={t('Cover preview')} className="aspect-[3/1] w-full rounded-xl object-cover" />
                     )}
                   </div>
                 )}
               </Field>
-              <Field label="Description" error={errors.description} className="sm:col-span-2">
+              <Field label={t('Description')} error={errors.description} className="sm:col-span-2">
                 {(id) => <Textarea id={id} value={form.description ?? ''} onChange={text('description')} rows={3} />}
               </Field>
             </div>
@@ -98,7 +100,7 @@ export function RestaurantForm({ restaurant, section = 'all', disabled }: { rest
         )}
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Currency" error={errors.currency}>
+          <Field label={t('Currency')} error={errors.currency}>
             {(id) => (
               <Select id={id} value={form.currency} onChange={(e) => set('currency', e.target.value)}>
                 {currencies.map((c) => (
@@ -109,7 +111,7 @@ export function RestaurantForm({ restaurant, section = 'all', disabled }: { rest
               </Select>
             )}
           </Field>
-          <Field label="Tax rate (%)" hint="Applied to new orders after discounts." error={errors.taxRate}>
+          <Field label={t('Tax rate (%)')} hint={t('Applied to new orders after discounts.')} error={errors.taxRate}>
             {(id) => (
               <Input id={id} type="number" min={0} max={100} step="0.01" value={form.taxRate} onChange={(e) => set('taxRate', Number(e.target.value))} />
             )}
@@ -120,7 +122,7 @@ export function RestaurantForm({ restaurant, section = 'all', disabled }: { rest
       {!disabled && (
         <div className="flex justify-end">
           <Button type="submit" loading={saving} icon={<Save className="size-4" />}>
-            Save changes
+            {t('Save changes')}
           </Button>
         </div>
       )}

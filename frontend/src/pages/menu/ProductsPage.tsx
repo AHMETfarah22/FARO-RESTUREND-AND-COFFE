@@ -117,7 +117,7 @@ export function ProductsPage() {
                   </div>
                   {p.description && <p className="mt-2 line-clamp-2 text-sm text-muted">{p.description}</p>}
                   <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
-                    <span className="inline-flex items-center gap-1"><Clock className="size-3.5" /> {p.preparationMinutes} min</span>
+                    <span className="inline-flex items-center gap-1"><Clock className="size-3.5" /> {t('{n} min', { n: p.preparationMinutes })}</span>
                     <span className={cn(p.stock !== null && p.stock <= 5 && 'font-semibold text-warning')}>
                       {p.stock === null ? t('Stock not tracked') : t('{n} in stock', { n: p.stock })}
                     </span>

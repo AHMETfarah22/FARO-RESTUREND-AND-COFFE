@@ -14,7 +14,7 @@ import { useAsync } from '@/hooks/useAsync'
 import { productsApi, reportsApi } from '@/lib/endpoints'
 import { ProductImage } from '@/components/ProductImage'
 import { useMemo } from 'react'
-import { formatMoney, formatNumber, timeAgo } from '@/lib/format'
+import { formatMoney, formatNumber, periodLabel, timeAgo } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
 import { workspaces } from '@/lib/permissions'
 
@@ -34,6 +34,7 @@ export function DashboardPage() {
   if (error && !data) return <ErrorState message={error} onRetry={reload} />
 
   const money = (v: number, compact = false) => formatMoney(v, data?.currency ?? 'TRY', { compact })
+  const days = data?.last7Days.map((p) => ({ ...p, label: periodLabel(p.periodStart, 'Day') })) ?? []
 
   return (
     <>
@@ -98,13 +99,13 @@ export function DashboardPage() {
             <Card className="xl:col-span-2">
               <CardHeader title={t('Daily revenue')} description={t('Paid orders · last 7 days')} />
               <div className="p-4 sm:p-6">
-                <TrendChart data={data.last7Days} xKey="label" yKey="revenue" label={t('Revenue')} format={(v) => money(v)} tickFormat={(v) => money(v, true)} />
+                <TrendChart data={days} xKey="label" yKey="revenue" label={t('Revenue')} format={(v) => money(v)} tickFormat={(v) => money(v, true)} />
               </div>
             </Card>
             <Card>
               <CardHeader title={t('Orders')} description={t('Paid orders per day')} />
               <div className="p-4 sm:p-6">
-                <ColumnChart data={data.last7Days} xKey="label" yKey="orders" label={t('Orders')} format={(v) => formatNumber(v)} />
+                <ColumnChart data={days} xKey="label" yKey="orders" label={t('Orders')} format={(v) => formatNumber(v)} />
               </div>
             </Card>
           </div>

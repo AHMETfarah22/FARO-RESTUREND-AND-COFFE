@@ -204,7 +204,7 @@ export function OrderEditorPage() {
               )}
             </Field>
             {!customerId && (
-              <Field label="Guest name (optional)" className="col-span-2">
+              <Field label={t('Guest name (optional)')} className="col-span-2">
                 {(fid) => <Input id={fid} value={customerName} onChange={(e) => setCustomerName(e.target.value)} />}
               </Field>
             )}

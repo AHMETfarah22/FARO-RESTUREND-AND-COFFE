@@ -4,7 +4,7 @@ import type { CategoryRow, CustomerRow, Db, NotificationRow, OrderRow, ProductRo
 import { recalculate, tableName } from './util'
 
 /*
- * Sample data for the demo — the same restaurant, menu, tables and accounts as the development seeder
+ * Sample data for the demo — the same restaurant, menu, tables and accounts as the development seeder (in Turkish)
  * (backend DbSeeder), plus a month of sales history so the dashboard and reports have something to show.
  */
 
@@ -47,55 +47,63 @@ const staffRoles: Role[] = ['Manager', 'Waiter', 'Kitchen', 'Cashier']
 const cover = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=75'
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=75`
 
-/** Category → [name, description, price, preparation minutes, featured, Unsplash photo id] */
-const menu: [string, string, [string, string, number, number, boolean, string][]][] = [
-  ['Coffee', '☕', [
-    ['Espresso', 'Double shot of our house blend', 80, 3, false, '1510707577719-ae7c14805e3a'],
-    ['Americano', 'Espresso with hot water', 95, 3, false, '1551030173-122aabc4489c'],
-    ['Cappuccino', 'Espresso, steamed milk and milk foam', 120, 4, true, '1572442388796-11668a67e53d'],
-    ['Caffè Latte', 'Espresso with silky steamed milk', 125, 4, false, '1561882468-9110e03e0f78'],
-    ['Flat White', 'Ristretto with velvety micro-foam', 130, 4, false, '1577968897966-3d4325b36b61'],
-    ['Turkish Coffee', 'Traditional, served with lokum', 90, 6, true, '1506778020041-0ea35027d019'],
+/**
+ * The same menu as the development seeder, written in Turkish for the demo's audience (Turkish restaurants).
+ * Category → [SKU prefix, icon, [name, description, price, preparation minutes, featured, Unsplash photo id]]
+ */
+const menu: [string, string, string, [string, string, number, number, boolean, string][]][] = [
+  ['Kahve', 'KHV', '☕', [
+    ['Espresso', 'Ev harmanımızdan duble shot', 80, 3, false, '1510707577719-ae7c14805e3a'],
+    ['Americano', 'Sıcak su ile espresso', 95, 3, false, '1551030173-122aabc4489c'],
+    ['Cappuccino', 'Espresso, buharlı süt ve süt köpüğü', 120, 4, true, '1572442388796-11668a67e53d'],
+    ['Caffè Latte', 'İpeksi buharlı süt ile espresso', 125, 4, false, '1561882468-9110e03e0f78'],
+    ['Flat White', 'Kadifemsi mikro köpüklü ristretto', 130, 4, false, '1577968897966-3d4325b36b61'],
+    ['Türk Kahvesi', 'Geleneksel, lokum ile servis edilir', 90, 6, true, '1506778020041-0ea35027d019'],
   ]],
-  ['Breakfast', '🍳', [
-    ['Turkish Breakfast Plate', 'Cheeses, olives, eggs, honey and simit', 420, 12, true, '1533089860892-a7c6f0a88666'],
-    ['Menemen', 'Eggs with tomatoes, peppers and spices', 210, 10, false, '1525351484163-7529414344d8'],
-    ['Avocado Toast', 'Sourdough, avocado, poached egg', 240, 8, false, '1588137378633-dea1336ce1e2'],
+  ['Kahvaltı', 'KAH', '🍳', [
+    ['Serpme Kahvaltı', 'Peynirler, zeytin, yumurta, bal ve simit', 420, 12, true, '1533089860892-a7c6f0a88666'],
+    ['Menemen', 'Domates, biber ve baharatlarla yumurta', 210, 10, false, '1525351484163-7529414344d8'],
+    ['Avokadolu Tost', 'Ekşi mayalı ekmek, avokado, poşe yumurta', 240, 8, false, '1588137378633-dea1336ce1e2'],
   ]],
-  ['Burger', '🍔', [
-    ['Classic Burger', 'Beef patty, cheddar, pickles, house sauce', 290, 15, false, '1568901346375-23c9450c58cd'],
-    ['Chicken Burger', 'Crispy chicken, coleslaw, spicy mayo', 250, 14, true, '1606755962773-d324e0a13086'],
-    ['Truffle Burger', 'Beef, truffle mayo, caramelised onion', 360, 16, false, '1553979459-d2229ba7433b'],
+  ['Burger', 'BRG', '🍔', [
+    ['Klasik Burger', 'Dana köfte, cheddar, turşu, ev sosu', 290, 15, false, '1568901346375-23c9450c58cd'],
+    ['Tavuk Burger', 'Çıtır tavuk, coleslaw, acı mayonez', 250, 14, true, '1606755962773-d324e0a13086'],
+    ['Trüflü Burger', 'Dana köfte, trüflü mayonez, karamelize soğan', 360, 16, false, '1553979459-d2229ba7433b'],
   ]],
-  ['Pizza', '🍕', [
-    ['Margherita', 'Tomato, mozzarella, fresh basil', 280, 14, false, '1574071318508-1cdbab80d002'],
-    ['Pepperoni', 'Tomato, mozzarella, spicy pepperoni', 320, 14, true, '1628840042765-356cda07504e'],
-    ['Four Cheese', 'Mozzarella, gorgonzola, parmesan, cheddar', 340, 14, false, '1513104890138-7c749659a591'],
+  ['Pizza', 'PIZ', '🍕', [
+    ['Margarita', 'Domates sosu, mozzarella, taze fesleğen', 280, 14, false, '1574071318508-1cdbab80d002'],
+    ['Pepperoni', 'Domates sosu, mozzarella, acılı pepperoni', 320, 14, true, '1628840042765-356cda07504e'],
+    ['Dört Peynirli', 'Mozzarella, gorgonzola, parmesan, cheddar', 340, 14, false, '1513104890138-7c749659a591'],
   ]],
-  ['Food', '🍽️', [
-    ['Caesar Salad', 'Romaine, parmesan, croutons, chicken', 230, 8, false, '1550304943-4f24f54ddde9'],
-    ['Penne Arrabbiata', 'Spicy tomato sauce, parsley', 240, 12, false, '1621996346565-e3dbc646d9a9'],
-    ['Grilled Salmon', 'With seasonal vegetables', 480, 18, true, '1467003909585-2f8a72700288'],
-    ['Chicken Wrap', 'Grilled chicken, vegetables, yoghurt sauce', 220, 9, false, '1626700051175-6818013e1d4f'],
+  ['Ana Yemekler', 'YMK', '🍽️', [
+    ['Sezar Salata', 'Marul, parmesan, kruton, tavuk', 230, 8, false, '1550304943-4f24f54ddde9'],
+    ['Penne Arrabbiata', 'Acı domates sosu, maydanoz', 240, 12, false, '1621996346565-e3dbc646d9a9'],
+    ['Izgara Somon', 'Mevsim sebzeleri ile', 480, 18, true, '1467003909585-2f8a72700288'],
+    ['Tavuk Dürüm', 'Izgara tavuk, sebzeler, yoğurtlu sos', 220, 9, false, '1626700051175-6818013e1d4f'],
   ]],
-  ['Dessert', '🍰', [
-    ['San Sebastian Cheesecake', 'Burnt Basque cheesecake', 190, 3, true, '1635327173758-85badf17f995'],
-    ['Chocolate Brownie', 'Warm, with vanilla ice cream', 170, 5, false, '1606313564200-e75d5e30476c'],
-    ['Tiramisu', 'Mascarpone, espresso, cocoa', 180, 3, false, '1571877227200-a0d98ea607e9'],
-    ['Baklava', 'Pistachio baklava, 4 pieces', 200, 3, false, '1761828122856-8703baac8e86'],
+  ['Tatlılar', 'TAT', '🍰', [
+    ['San Sebastian Cheesecake', 'Yanık Bask cheesecake', 190, 3, true, '1635327173758-85badf17f995'],
+    ['Çikolatalı Brownie', 'Sıcak, vanilyalı dondurma ile', 170, 5, false, '1606313564200-e75d5e30476c'],
+    ['Tiramisu', 'Mascarpone, espresso, kakao', 180, 3, false, '1571877227200-a0d98ea607e9'],
+    ['Fıstıklı Baklava', 'Antep fıstıklı, 4 dilim', 200, 3, false, '1761828122856-8703baac8e86'],
   ]],
-  ['Cold Drinks', '🥤', [
-    ['Cola', '330 ml', 60, 1, false, '1629654613528-5d0a2e4166de'],
-    ['Fresh Lemonade', 'House-made with mint', 90, 3, true, '1621263764928-df1444c5e859'],
-    ['Iced Latte', 'Espresso, cold milk, ice', 130, 3, false, '1517701604599-bb29b565090c'],
-    ['Mineral Water', 'Sparkling, 200 ml', 40, 1, false, '1523362628745-0c100150b504'],
+  ['Soğuk İçecekler', 'SOG', '🥤', [
+    ['Kola', '330 ml', 60, 1, false, '1629654613528-5d0a2e4166de'],
+    ['Taze Limonata', 'Ev yapımı, naneli', 90, 3, true, '1621263764928-df1444c5e859'],
+    ['Buzlu Latte', 'Espresso, soğuk süt, buz', 130, 3, false, '1517701604599-bb29b565090c'],
+    ['Maden Suyu', '200 ml', 40, 1, false, '1523362628745-0c100150b504'],
   ]],
-  ['Hot Drinks', '🍵', [
-    ['Turkish Tea', 'Freshly brewed black tea', 35, 2, false, '1576092768241-dec231879fc3'],
-    ['Hot Chocolate', 'Belgian chocolate, whipped cream', 120, 4, false, '1542990253-0d0f5be5f0ed'],
-    ['Herbal Tea', 'Chamomile, mint or linden', 70, 3, false, '1627435601361-ec25f5b1d0e5'],
+  ['Sıcak İçecekler', 'SIC', '🍵', [
+    ['Çay', 'Taze demlenmiş siyah çay', 35, 2, false, '1576092768241-dec231879fc3'],
+    ['Sıcak Çikolata', 'Belçika çikolatası, krema', 120, 4, false, '1542990253-0d0f5be5f0ed'],
+    ['Bitki Çayı', 'Papatya, nane veya ıhlamur', 70, 3, false, '1627435601361-ec25f5b1d0e5'],
   ]],
 ]
+
+/** Made in limited batches — shows stock tracking. */
+const TRACKED_CATEGORY = 'Tatlılar'
+/** Ordered more often, so the "popular products" charts look like a café. */
+const POPULAR_CATEGORY = 'Kahve'
 
 const people: [string, string, string][] = [
   ['Can Öztürk', '+90 533 111 11 11', 'can.ozturk@example.com'],
@@ -115,34 +123,34 @@ const bookings: [number, number, number, ReservationStatus, string | null][] = [
   [-6, 13, 2, 'Completed', null],
   [-5, 20, 4, 'Completed', null],
   [-3, 19, 4, 'Completed', null],
-  [-2, 20, 2, 'Completed', 'Anniversary dinner'],
+  [-2, 20, 2, 'Completed', 'Yıldönümü yemeği'],
   [-1, 13, 6, 'Cancelled', null],
-  [0, 19, 2, 'Confirmed', 'Window seat please'],
-  [0, 20, 8, 'Confirmed', 'Birthday — bring a candle'],
+  [0, 19, 2, 'Confirmed', 'Pencere kenarı lütfen'],
+  [0, 20, 8, 'Confirmed', 'Doğum günü — pasta için mum hazırlansın'],
   [1, 12, 4, 'Pending', null],
   [2, 19, 2, 'Confirmed', null],
-  [3, 20, 4, 'Pending', 'Vegetarian guests'],
+  [3, 20, 4, 'Pending', 'Vejetaryen misafirler'],
   [4, 19, 3, 'Confirmed', null],
   [5, 13, 6, 'Pending', null],
-  [6, 20, 5, 'Pending', 'Business dinner'],
+  [6, 20, 5, 'Pending', 'İş yemeği'],
   [7, 21, 2, 'Pending', null],
   [10, 19, 2, 'Pending', null],
 ]
 
 /** (name, unit, quantity, minimum, supplier, purchase price) — three items start below their minimum. */
 const stock: [string, string, number, number, string, number][] = [
-  ['Coffee Beans', 'kg', 2, 5, 'Kuru Kahveci Roasters', 850],
-  ['Whole Milk', 'L', 18, 10, 'Sütaş', 32],
-  ['Oat Milk', 'L', 4, 6, 'Oatly Distributor', 95],
-  ['Burger Buns', 'pcs', 60, 30, 'Uno Bakery', 6],
-  ['Beef Patties', 'pcs', 45, 20, 'Metro Gross', 48],
-  ['Chicken Breast', 'kg', 9, 5, 'Banvit', 210],
+  ['Kahve Çekirdeği', 'kg', 2, 5, 'Kuru Kahveci Kavurma', 850],
+  ['Tam Yağlı Süt', 'L', 18, 10, 'Sütaş', 32],
+  ['Yulaf Sütü', 'L', 4, 6, 'Oatly Türkiye', 95],
+  ['Hamburger Ekmeği', 'adet', 60, 30, 'Uno Fırın', 6],
+  ['Burger Köftesi', 'adet', 45, 20, 'Metro Toptan', 48],
+  ['Tavuk Göğsü', 'kg', 9, 5, 'Banvit', 210],
   ['Mozzarella', 'kg', 6, 4, 'Pınar', 320],
-  ['Pizza Dough', 'pcs', 25, 15, 'In-house', 12],
-  ['Tomatoes', 'kg', 14, 8, 'Local Market', 35],
-  ['Chocolate', 'kg', 1.5, 2, 'Callebaut', 690],
-  ['Sugar', 'kg', 20, 5, 'Metro Gross', 38],
-  ['Paper Cups', 'pcs', 400, 200, 'Packaging Co.', 2.5],
+  ['Pizza Hamuru', 'adet', 25, 15, 'Kendi üretimimiz', 12],
+  ['Domates', 'kg', 14, 8, 'Hal', 35],
+  ['Bitter Çikolata', 'kg', 1.5, 2, 'Callebaut', 690],
+  ['Toz Şeker', 'kg', 20, 5, 'Metro Toptan', 38],
+  ['Karton Bardak', 'adet', 400, 200, 'Ambalaj Dünyası', 2.5],
 ]
 
 /** Busier at lunch and dinner. */
@@ -196,15 +204,15 @@ export function createSeed(now: Date, version: number): Db {
     })
 
   const layout: [number, string][] = [
-    [2, 'Window'], [2, 'Window'], [4, 'Main Hall'], [4, 'Main Hall'], [4, 'Main Hall'],
-    [6, 'Main Hall'], [4, 'Terrace'], [4, 'Terrace'], [2, 'Garden'], [8, 'VIP Room'],
+    [2, 'Pencere önü'], [2, 'Pencere önü'], [4, 'Ana salon'], [4, 'Ana salon'], [4, 'Ana salon'],
+    [6, 'Ana salon'], [4, 'Teras'], [4, 'Teras'], [2, 'Bahçe'], [8, 'VIP oda'],
   ]
   const tables: TableRow[] = layout.map(([capacity, location], i) => ({ id: ids.uuid(), number: i + 1, capacity, location, status: 'Available' }))
 
   const categories: CategoryRow[] = []
   const products: ProductRow[] = []
   let sku = 100
-  menu.forEach(([name, icon, items], sortOrder) => {
+  menu.forEach(([name, prefix, icon, items], sortOrder) => {
     const category: CategoryRow = { id: ids.uuid(), name, description: null, icon, sortOrder, isActive: true }
     categories.push(category)
     for (const [productName, description, price, preparationMinutes, isFeatured, photoId] of items) {
@@ -215,9 +223,8 @@ export function createSeed(now: Date, version: number): Db {
         description,
         imageUrl: photo(photoId),
         price,
-        sku: `${name.slice(0, 3).toUpperCase()}-${sku++}`,
-        // Desserts are made in limited batches — shows stock tracking.
-        stock: name === 'Dessert' ? 25 : null,
+        sku: `${prefix}-${sku++}`,
+        stock: name === TRACKED_CATEGORY ? 25 : null,
         isAvailable: true,
         isFeatured,
         preparationMinutes,
@@ -240,7 +247,7 @@ export function createSeed(now: Date, version: number): Db {
 
   // ---- orders: a month of history, today so far, and six live tickets for the kitchen and floor staff
   const categoryOf = new Map(categories.map((c) => [c.id, c.name]))
-  const weighted = products.flatMap((p) => Array<ProductRow>((p.isFeatured ? 3 : 1) * (categoryOf.get(p.categoryId) === 'Coffee' ? 2 : 1)).fill(p))
+  const weighted = products.flatMap((p) => Array<ProductRow>((p.isFeatured ? 3 : 1) * (categoryOf.get(p.categoryId) === POPULAR_CATEGORY ? 2 : 1)).fill(p))
   const orders: OrderRow[] = []
 
   const addOrder = (createdAt: Date, status: OrderStatus, table: TableRow, source = rnd.chance(0.45) ? ('QrMenu' as const) : ('Staff' as const)) => {
@@ -294,11 +301,11 @@ export function createSeed(now: Date, version: number): Db {
     for (let i = 0; i < count; i++) addOrder(at(day, rnd.pick(busyHours), rnd.int(0, 59)), finished(), rnd.pick(tables))
   }
 
-  // Today until shortly before the live tickets.
+  // Today until shortly before the live tickets (about the pace of the previous days).
   const liveFrom = minutesAgo(80)
   for (let hour = 8; hour <= 22; hour++) {
-    const times = [at(0, hour, rnd.int(0, 29)), at(0, hour, rnd.int(30, 59))]
-    for (const time of times) if (time < liveFrom && rnd.chance(0.75)) addOrder(time, finished(), rnd.pick(tables))
+    const time = at(0, hour, rnd.int(0, 59))
+    if (time < liveFrom && rnd.chance(0.65)) addOrder(time, finished(), rnd.pick(tables))
   }
 
   // Live tickets on Masa 03–08, so the floor plan shows them.
@@ -422,8 +429,8 @@ export function createSeed(now: Date, version: number): Db {
       coverImageUrl: cover,
       phone: '+90 212 000 00 00',
       email: 'info@example.com',
-      address: 'Istiklal Caddesi No: 1, Beyoğlu, Istanbul',
-      description: 'Premium restaurant & specialty coffee.',
+      address: 'İstiklal Caddesi No: 1, Beyoğlu, İstanbul',
+      description: 'Premium restoran ve nitelikli kahve.',
       openingTime: '08:00',
       closingTime: '23:00',
       currency: 'TRY',

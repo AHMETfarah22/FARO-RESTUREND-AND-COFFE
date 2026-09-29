@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { env } from '@/config/env'
+import { localizeApiMessage } from './apiMessages'
 import { translate, type Lang } from './i18n'
 
 /** Language of the page being shown (staff portal or customer menu — each has its own TR / EN switch). */
@@ -38,7 +39,8 @@ export const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = tokenStore.get()
   if (token) config.headers.Authorization = `Bearer ${token}`
-  // Error messages come back in the language the page is shown in (staff or customer switch).
+  // The page language (staff or customer switch). The API still answers in English; getErrorMessage
+  // shows its messages in this language (lib/apiMessages.ts).
   config.headers['Accept-Language'] = pageLang()
   return config
 })
@@ -82,7 +84,8 @@ export function getErrorMessage(error: unknown): string {
     if (error.response.status === 429) return translate('Too many requests. Please wait a moment and try again.', undefined, pageLang())
     const data = error.response.data as ProblemDetails | undefined
     const firstFieldError = data?.errors && Object.values(data.errors)[0]?.[0]
-    return firstFieldError ?? data?.detail ?? data?.title ?? translate('Request failed ({status})', { status: error.response.status }, pageLang())
+    const message = firstFieldError ?? data?.detail ?? data?.title
+    return message ? localizeApiMessage(message, pageLang()) : translate('Request failed ({status})', { status: error.response.status }, pageLang())
   }
   return error instanceof Error ? error.message : translate('Something went wrong.', undefined, pageLang())
 }
@@ -91,7 +94,9 @@ export function getErrorMessage(error: unknown): string {
 export function getFieldErrors(error: unknown): Record<string, string> {
   if (error instanceof AxiosError && error.response?.status === 400) {
     const errors = (error.response.data as ProblemDetails | undefined)?.errors ?? {}
-    return Object.fromEntries(Object.entries(errors).map(([k, v]) => [k.charAt(0).toLowerCase() + k.slice(1), v[0]]))
+    return Object.fromEntries(
+      Object.entries(errors).map(([k, v]) => [k.charAt(0).toLowerCase() + k.slice(1), localizeApiMessage(v[0], pageLang())]),
+    )
   }
   return {}
 }

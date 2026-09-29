@@ -73,12 +73,12 @@ export function TablesPage() {
           <>
             <Link to="/qr-codes">
               <Button variant="secondary" icon={<QrCode className="size-4" />}>
-                All QR codes
+                {t('All QR codes')}
               </Button>
             </Link>
             {can('tablesManage') && (
               <Button icon={<Plus className="size-4" />} onClick={() => setEditing('new')}>
-                Add masa
+                {t('Add table')}
               </Button>
             )}
           </>

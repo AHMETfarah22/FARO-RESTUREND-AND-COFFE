@@ -46,6 +46,19 @@ export function formatTimeOnly(value: string) {
   return value.slice(0, 5)
 }
 
+/**
+ * Chart label of a report period in the portal language ("26 Eyl", "21 Eyl haftası", "Eyl 2026", "2026").
+ * The API's own labels are English, so charts format the period start instead.
+ */
+export function periodLabel(periodStart: string, groupBy: 'Day' | 'Week' | 'Month' | 'Year') {
+  const [y, m, d] = periodStart.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  if (groupBy === 'Year') return String(y)
+  if (groupBy === 'Month') return date.toLocaleDateString(localeFor(), { month: 'short', year: 'numeric' })
+  const day = date.toLocaleDateString(localeFor(), { day: '2-digit', month: 'short' })
+  return groupBy === 'Week' ? translate('Week of {date}', { date: day }) : day
+}
+
 /** "Saturday 26 September" / "26 Eylül Cumartesi" */
 export function formatLongDate(value: Date = new Date()) {
   return value.toLocaleDateString(localeFor(), { weekday: 'long', day: 'numeric', month: 'long' })

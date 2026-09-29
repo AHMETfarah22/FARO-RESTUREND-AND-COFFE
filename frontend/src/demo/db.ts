@@ -217,7 +217,7 @@ export interface Db {
 }
 
 /** Bump when the shape of Db or the sample data changes, so visitors get fresh data. */
-const VERSION = 1
+const VERSION = 2
 const KEY = 'faro.demo.db'
 
 let cache: Db | null = null
