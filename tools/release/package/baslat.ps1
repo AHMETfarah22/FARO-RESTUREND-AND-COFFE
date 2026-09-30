@@ -63,8 +63,23 @@ $urls = $lines | Where-Object { $_ -match '^ASPNETCORE_URLS=' } | Select-Object 
 if ($urls -match ':(\d+)') { $port = [int]$Matches[1] }
 $local = "http://localhost:$port"
 
-if (-not (Get-Service -Name 'postgresql*' -ErrorAction SilentlyContinue)) {
+# Already running (e.g. started with Windows)? Then just open the portal.
+try {
+  Invoke-WebRequest "$local/api/health" -UseBasicParsing -TimeoutSec 2 | Out-Null
+  Write-Host 'FARO zaten çalışıyor; tarayıcı açılıyor.' -ForegroundColor Green
+  Start-Process $local
+  exit 0
+} catch { }
+
+$postgres = Get-Service -Name 'postgresql*' -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $postgres) {
   Write-Host 'Uyarı: Bu bilgisayarda PostgreSQL hizmeti bulunamadı. Kurulum için OKUBENI.txt dosyasına bakın.' -ForegroundColor Yellow
+} else {
+  # Right after the computer starts, the database may still be starting.
+  for ($i = 0; $i -lt 60 -and (Get-Service -Name $postgres.Name).Status -ne 'Running'; $i++) {
+    if ($i -eq 0) { Write-Host 'Veritabanının açılması bekleniyor...' }
+    Start-Sleep -Seconds 1
+  }
 }
 
 # Addresses for phones and tablets on the same Wi-Fi (virtual adapters are skipped).
@@ -80,6 +95,7 @@ Write-Host 'FARO RESTURENT AND COFFE' -ForegroundColor White
 Write-Host "  Bu bilgisayar      : $local"
 foreach ($address in $lan) { Write-Host "  Telefon / tablet   : $address" }
 Write-Host '  Bu pencereyi KAPATMAYIN (küçültebilirsiniz) — kapanırsa sistem durur.' -ForegroundColor Yellow
+Write-Host '  Sunucu durursa kendiliğinden yeniden başlar.'
 Write-Host ''
 
 # Open the browser as soon as the API answers (in the background, while the API runs in this window).
@@ -94,7 +110,19 @@ $null = Start-Job -ArgumentList $local -ScriptBlock {
   }
 }
 
+# Keep the server running: if it stops (an error, the database restarting ...) it is started again.
+# If it stops within seconds several times in a row, a setting is wrong — then stop and explain.
+$quickStops = 0
 Push-Location $app
-try { & $exe } finally { Pop-Location }
+try {
+  while ($quickStops -lt 5) {
+    $started = Get-Date
+    & $exe
+    if (((Get-Date) - $started).TotalSeconds -lt 60) { $quickStops++ } else { $quickStops = 0 }
+    Write-Host ''
+    Write-Host 'Sunucu durdu; 5 saniye içinde yeniden başlatılıyor...' -ForegroundColor Yellow
+    Start-Sleep -Seconds 5
+  }
+} finally { Pop-Location }
 
-Stop-WithMessage ('Sunucu durdu. Veritabanı bağlantı hatası görüyorsanız ' + $envFile + ' dosyasını Not Defteri ile açıp PostgreSQL şifresini (Password=...) düzeltin.')
+Stop-WithMessage ('Sunucu tekrar tekrar duruyor. Veritabanı bağlantı hatası görüyorsanız ' + $envFile + ' dosyasını Not Defteri ile açıp PostgreSQL şifresini (Password=...) düzeltin ve PostgreSQL hizmetinin çalıştığından emin olun.')

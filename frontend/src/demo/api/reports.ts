@@ -191,7 +191,9 @@ route('GET', '/dashboard', (req): Dashboard => {
   const orders = ordersBetween(toIsoDate(addDays(new Date(), -29)), today)
 
   const todayOrders = orders.filter((o) => localDate(o.createdAt) === today)
-  const yesterdayOrders = orders.filter((o) => localDate(o.createdAt) === yesterday)
+  // Same time yesterday: comparing a day in progress with a whole day would always look like a drop.
+  const sameTimeYesterday = addDays(new Date(), -1).toISOString()
+  const yesterdayOrders = orders.filter((o) => localDate(o.createdAt) === yesterday && o.createdAt <= sameTimeYesterday)
   const todaySales = round2(sum(todayOrders.filter(isSale).map((o) => o.total)))
   const yesterdaySales = round2(sum(yesterdayOrders.filter(isSale).map((o) => o.total)))
   const todayCount = todayOrders.filter((o) => o.status !== 'Cancelled').length

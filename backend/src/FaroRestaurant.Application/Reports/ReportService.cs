@@ -87,7 +87,9 @@ public class ReportService(IAppDbContext db, IRestaurantScope scope, IClock cloc
         var yesterdayStart = clock.StartOfDayUtc(today.AddDays(-1));
 
         var todayOrders = orders.Where(o => o.CreatedAt >= todayStart).ToList();
-        var yesterdayOrders = orders.Where(o => o.CreatedAt >= yesterdayStart && o.CreatedAt < todayStart).ToList();
+        // Same time yesterday: comparing a day in progress with a whole day would always look like a drop.
+        var sameTimeYesterday = clock.UtcNow.AddDays(-1);
+        var yesterdayOrders = orders.Where(o => o.CreatedAt >= yesterdayStart && o.CreatedAt < todayStart && o.CreatedAt <= sameTimeYesterday).ToList();
         var todaySales = todayOrders.Where(IsSale).Sum(o => o.Total);
         var yesterdaySales = yesterdayOrders.Where(IsSale).Sum(o => o.Total);
         var todayCount = todayOrders.Count(o => o.Status != OrderStatus.Cancelled);

@@ -3,6 +3,7 @@
 
   Output: release\FARO-Restaurant\  (and a .zip of it)
     FARO-Baslat.cmd   start the system (first run asks for the PostgreSQL password)
+    Otomatik-Baslat.cmd  turn "start with Windows" on / off
     OKUBENI.txt       installation guide (Turkish)
     .env              settings of this installation
     app\              the program: self-contained API (no .NET needed) + the portal in app\wwwroot
@@ -60,6 +61,8 @@ Step 'Başlatma dosyaları ekleniyor'
 Copy-Item (Join-Path $template 'FARO-Baslat.cmd') $out -Force
 Copy-Item (Join-Path $template 'OKUBENI.txt') $out -Force
 Copy-Item (Join-Path $template 'baslat.ps1') $app -Force
+Copy-Item (Join-Path $template 'otomatik-baslat.ps1') $app -Force
+Copy-Item (Join-Path $template 'Otomatik-Baslat.cmd') $out -Force
 if (-not (Test-Path (Join-Path $out '.env'))) { Copy-Item (Join-Path $template 'env.template') (Join-Path $out '.env') }
 
 if (-not $NoZip) {

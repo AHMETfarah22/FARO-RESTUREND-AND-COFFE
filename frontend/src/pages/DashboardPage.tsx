@@ -74,8 +74,8 @@ export function DashboardPage() {
           Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-36" />)
         ) : (
           <>
-            <StatCard label={t("Today's sales")} value={money(data.todaySales.value, true)} change={data.todaySales.changePercent} hint={t('vs yesterday')} icon={<Wallet className="size-4" />} to="/reports" />
-            <StatCard label={t("Today's orders")} value={formatNumber(data.todayOrders.value)} change={data.todayOrders.changePercent} hint={t('vs yesterday')} icon={<Receipt className="size-4" />} to="/orders" />
+            <StatCard label={t("Today's sales")} value={money(data.todaySales.value, true)} change={data.todaySales.changePercent} hint={t('vs this time yesterday')} icon={<Wallet className="size-4" />} to="/reports" />
+            <StatCard label={t("Today's orders")} value={formatNumber(data.todayOrders.value)} change={data.todayOrders.changePercent} hint={t('vs this time yesterday')} icon={<Receipt className="size-4" />} to="/orders" />
             <StatCard label={t('Pending orders')} value={data.pendingOrders} hint={t('in progress now')} icon={<Clock className="size-4" />} to="/orders/pending" />
             <StatCard label={t('Completed orders')} value={data.completedOrders} hint={t('today')} icon={<CheckCircle2 className="size-4" />} to="/orders/completed" />
             <StatCard label={t('Reservations')} value={data.todayReservations} hint={t('today')} icon={<CalendarDays className="size-4" />} to="/reservations" />

@@ -275,7 +275,7 @@ export const tr: Record<string, string> = {
   'Free tables': 'Boş masalar',
   'Occupied tables': 'Dolu masalar',
   'Low stock': 'Düşük stok',
-  'vs yesterday': 'düne göre',
+  'vs this time yesterday': 'dün bu saate göre',
   'in progress now': 'şu an işlemde',
   today: 'bugün',
   'ready to seat': 'müşteri alabilir',
@@ -990,4 +990,67 @@ export const tr: Record<string, string> = {
   'res|Cancel': 'İptal et',
   'res|Arrived': 'Geldi',
   'res|Complete': 'Tamamla',
+
+  // ---- public demo: product page
+  'Go to my panel': 'Panelime git',
+  'Restaurant & café management system': 'Restoran ve kafe yönetim sistemi',
+  'Run your whole restaurant from one screen.': 'Tüm restoranınızı tek ekrandan yönetin.',
+  'Orders, kitchen display, QR menu, cash desk, tables, stock and reports — in Turkish and English, on phone, tablet and computer.':
+    'Siparişler, mutfak ekranı, QR menü, kasa, masalar, stok ve raporlar — Türkçe ve İngilizce; telefonda, tablette ve bilgisayarda.',
+  'Try the live demo': 'Canlı demoyu deneyin',
+  'Open the guest QR menu': 'Müşteri QR menüsünü açın',
+  'Free to try · no sign-up · nothing to install': 'Ücretsiz deneyin · kayıt yok · kurulum yok',
+  'Phone, tablet and computer': 'Telefon, tablet ve bilgisayar',
+  'Turkish and English': 'Türkçe ve İngilizce',
+  'Runs on your own network': 'Kendi ağınızda çalışır',
+  'Your data stays with you': 'Verileriniz sizde kalır',
+  'Everything your team needs, in one place': 'Ekibinizin ihtiyacı olan her şey tek yerde',
+  'From the first order at the table to the end-of-day report, every step is connected and updates live.':
+    'Masadaki ilk siparişten gün sonu raporuna kadar her adım birbirine bağlı ve anında güncellenir.',
+  'QR menu ordering': 'QR menüden sipariş',
+  'Guests scan the QR code on the table, order from their own phone and are notified when the food is ready.':
+    'Misafirler masadaki QR kodu okutur, kendi telefonundan sipariş verir ve yemeği hazır olunca bildirim alır.',
+  'New orders reach the kitchen screen instantly, with waiting times and one-tap status updates.':
+    'Yeni siparişler mutfak ekranına anında düşer; bekleme süreleri görünür, durum tek dokunuşla güncellenir.',
+  'Tables and service': 'Masalar ve servis',
+  'A live floor plan shows every table: available, occupied, reserved or being cleaned.':
+    'Canlı salon planı her masayı gösterir: boş, dolu, rezerve veya temizleniyor.',
+  'Cash desk and payments': 'Kasa ve ödemeler',
+  'Cash, card or online payments with receipts. A table becomes available as soon as its bill is paid.':
+    'Nakit, kart veya online ödeme ve fiş. Hesap ödendiği anda masa otomatik olarak boşa çıkar.',
+  'Calendar of bookings with guest details, party size and table assignment.':
+    'Misafir bilgisi, kişi sayısı ve masa ataması ile rezervasyon takvimi.',
+  'Stock tracking': 'Stok takibi',
+  'Ingredients and supplies with minimum levels; low stock is flagged on the dashboard.':
+    'Malzemeler minimum seviyeleriyle izlenir; azalan stok panelde uyarı olarak görünür.',
+  'Daily revenue, popular products and category sales, exported as PDF, Excel or CSV.':
+    'Günlük ciro, popüler ürünler ve kategori satışları; PDF, Excel veya CSV olarak indirilebilir.',
+  'Staff and roles': 'Personel ve roller',
+  'Every role has its own screen and permissions, so everyone sees only their own work.':
+    'Her rolün kendi ekranı ve yetkileri vardır; herkes yalnızca kendi işini görür.',
+  'Try every role': 'Her rolü deneyin',
+  'Pick a role to sign in with one click. Each role opens its own screen. Your changes stay in this browser only.':
+    'Tek tıkla giriş için bir rol seçin. Her rol kendi ekranını açar. Değişiklikleriniz yalnızca bu tarayıcıda kalır.',
+  'Everything: restaurant settings, staff, menu, reports.': 'Her şey: restoran ayarları, personel, menü, raporlar.',
+  'Dashboard, orders, menu, stock and reports.': 'Panel, siparişler, menü, stok ve raporlar.',
+  'Floor plan, taking orders, serving tables.': 'Salon planı, sipariş alma, masalara servis.',
+  'Full-screen kitchen display of incoming orders.': 'Gelen siparişler için tam ekran mutfak ekranı.',
+  'Open bills, taking payments, receipts.': 'Açık hesaplar, ödeme alma, fişler.',
+  'Own order history and reorders.': 'Kendi sipariş geçmişi ve tekrar sipariş.',
+  'Or open the guest QR menu in a new tab — orders placed there reach the kitchen live.':
+    'Ya da müşteri QR menüsünü yeni sekmede açın — oradan verilen siparişler mutfağa anında düşer.',
+  'How it works in your restaurant': 'Restoranınızda nasıl çalışır?',
+  'Installation': 'Kurulum',
+  'FARO is installed on a computer in your restaurant and set up with your menu, tables and staff.':
+    'FARO restoranınızdaki bir bilgisayara kurulur; menünüz, masalarınız ve personelinizle hazırlanır.',
+  'Every device': 'Tüm cihazlar',
+  'Waiters, the kitchen and the cash desk connect over the restaurant Wi-Fi; guests order through the QR codes.':
+    'Garsonlar, mutfak ve kasa restoranın Wi-Fi ağından bağlanır; misafirler QR kodlarla sipariş verir.',
+  'Licence': 'Lisans',
+  'Activated with a licence key for your restaurant — lifetime or as a subscription. Updates are included.':
+    'Restoranınıza özel lisans anahtarıyla etkinleştirilir — süresiz veya abonelik olarak. Güncellemeler dahildir.',
+  'Want FARO in your restaurant?': 'FARO restoranınızda olsun mu?',
+  'Get in touch for a price offer and installation.': 'Fiyat teklifi ve kurulum için bizimle iletişime geçin.',
+  'Contact us': 'Bize ulaşın',
+  'Live demo — sample data, renewed every day.': 'Canlı demo — örnek veriler her gün yenilenir.',
 }

@@ -44,7 +44,10 @@ export const router = createBrowserRouter([
   {
     errorElement: <RouteError />,
     children: [
-      { path: '/', element: <HomeRedirect /> },
+      // The public demo opens on its product page; an installation goes straight to the sign-in / home page.
+      import.meta.env.MODE === 'demo'
+        ? { path: '/', ...page(() => import('@/pages/LandingPage'), 'LandingPage') }
+        : { path: '/', element: <HomeRedirect /> },
       { path: '/login', ...page(() => import('@/pages/auth/LoginPage'), 'LoginPage', guest) },
       { path: '/register', ...page(() => import('@/pages/auth/RegisterPage'), 'RegisterPage', guest) },
 

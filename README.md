@@ -9,7 +9,9 @@ reservations, customers, staff, inventory, simulated payments and reports.
 ## Quick start (Windows)
 
 1. PostgreSQL running on `localhost:5432`, with the password set in `backend/.env`.
-2. Double-click **`start.cmd`**. It starts the API and the web app, then opens <http://localhost:5173>.
+2. Double-click **`start.cmd`**. It starts the API and the web app in two minimized windows (each restarts by itself
+   if it stops) and opens <http://localhost:5173>. To keep the portal always available, run **`otomatik-baslat.cmd`**
+   once: FARO then starts together with Windows.
 3. First time on a computer: the portal shows **Activate FARO** with this computer's machine code. Double-click
    **`lisans-olustur.cmd`**, enter a name and that code, and paste the key it prints (see [Licensing](#licensing)).
 
@@ -101,7 +103,8 @@ generate your own pair for production. Failed pushes never block staff actions �
 
 ## Live demo (GitHub Pages)
 
-The demo build runs the **whole portal without a server**: `frontend/src/demo` answers every `/api` call inside the
+The demo opens on a **product page** (`pages/LandingPage.tsx`: features, one-click sign-in per role, the guest QR
+menu and the seller's contact button). The demo build runs the **whole portal without a server**: `frontend/src/demo` answers every `/api` call inside the
 browser (a TypeScript port of the Application services — same rules, same messages) and replaces SignalR with an
 in-browser hub. Each visitor gets private sample data (a month of sales, live kitchen tickets, reservations, low stock)
 in `localStorage`, regenerated daily; tabs of the same browser share it live (QR menu in one tab, kitchen in another).
@@ -164,10 +167,11 @@ The customer's computer needs PostgreSQL. The API serves the portal and the API 
 ```text
 resturportal/
 ├── start.cmd                           # one-click local start (Windows)
+├── otomatik-baslat.cmd                 # start FARO together with Windows (on / off)
 ├── lisans-olustur.cmd                  # seller: create a license key for a machine code
 ├── paket-olustur.cmd                   # seller: build the customer installation package
 ├── demo-yayinla.cmd                    # seller: publish the live demo to the public faro-demo repository
-├── tools/license, tools/release, tools/demo   # the scripts behind the three files above
+├── tools/license, tools/release, tools/demo, tools/dev   # the scripts behind the files above
 ├── backend/
 │   ├── .env.example                    # copy to .env (git-ignored)
 │   └── src/
