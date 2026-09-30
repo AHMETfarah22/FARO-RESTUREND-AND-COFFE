@@ -1,8 +1,6 @@
 name: Build check
 
-# This repository is private. The public live demo is published to the separate "faro-demo"
-# repository with demo-yayinla.cmd (tools/demo/publish-demo.mjs); this workflow only checks that
-# the portal, the demo and the API build.
+# Checks that the portal, the demo and the API build. The live demo itself is published by deploy-demo.yml.
 
 on:
   push:

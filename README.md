@@ -112,11 +112,11 @@ in `localStorage`, regenerated daily; tabs of the same browser share it live (QR
 - Floating **DEMO** button: switch roles with one click, open the guest QR menu, reset the data, contact link.
 - Reports export real CSV, Excel and PDF files. Web Push is the only feature that needs the real server.
 - `npm run dev:demo` (local) / `npm run build:demo` (static files). The normal build contains none of the demo code.
-- Published with **`demo-yayinla.cmd`** (`tools/demo/publish-demo.mjs`): it builds the demo for
-  `https://<owner>.github.io/faro-demo/` and force-pushes the static files to the public `faro-demo` repository, so this
-  source repository can stay private. One-time: create the empty public repository; after the first run,
-  **Settings → Pages → Deploy from a branch → main / (root)**. `--contact https://wa.me/90…` adds a "Buy / contact"
-  button. `.github/workflows/ci.yml` only checks that the portal, the demo and the API build.
+- Published by **`.github/workflows/deploy-demo.yml`** on every push to `main`:
+  <https://ahmetfarah22.github.io/FARO-RESTUREND-AND-COFFE/> (one-time: **Settings → Pages → Source: GitHub Actions**).
+  The repository variable `DEMO_CONTACT_URL` (`https://wa.me/90…`) adds the contact buttons. To keep the source
+  private instead, publish to a separate public `faro-demo` repository with **`demo-yayinla.cmd`**
+  (`tools/demo/publish-demo.mjs`, `--contact …`). `ci.yml` checks that the portal, the demo and the API build.
 
 ## Licensing
 
@@ -170,7 +170,7 @@ resturportal/
 ├── otomatik-baslat.cmd                 # start FARO together with Windows (on / off)
 ├── lisans-olustur.cmd                  # seller: create a license key for a machine code
 ├── paket-olustur.cmd                   # seller: build the customer installation package
-├── demo-yayinla.cmd                    # seller: publish the live demo to the public faro-demo repository
+├── demo-yayinla.cmd                    # seller: (optional) publish the demo to a separate faro-demo repository
 ├── tools/license, tools/release, tools/demo, tools/dev   # the scripts behind the files above
 ├── backend/
 │   ├── .env.example                    # copy to .env (git-ignored)

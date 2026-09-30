@@ -7,7 +7,7 @@ kurmak ve **sizin onayınızla** (lisans anahtarı) çalışır hale getirmek.
 
 ## 1. Demo linki — müşterilere gönderin
 
-**Link: https://ahmetfarah22.github.io/faro-demo/**
+**Link: https://ahmetfarah22.github.io/FARO-RESTUREND-AND-COFFE/**
 
 Link önce bir **tanıtım sayfası** açar: özellikler, "Her rolü deneyin" düğmeleri, müşteri QR menüsü ve **Bize ulaşın**
 düğmesi. Demo, GitHub Pages üzerinde **ücretsiz** yayınlanır ve hiçbir kurulum gerektirmez. Müşteri linki telefonda veya
@@ -19,14 +19,14 @@ tek tıkla sisteme girer.
 - Sağ alttaki **DEMO** düğmesi: rol değiştir, müşteri QR menüsünü aç, demoyu sıfırla.
 - Etkileyici gösterim: DEMO → "Müşteri QR menüsünü aç" (yeni sekme) ile sipariş verin; mutfak ekranına **anında** düşer.
 
-**Kaynak kodunuz gizlidir.** Kod gizli `FARO-RESTUREND-AND-COFFE` deposunda durur; herkese açık `faro-demo` deposunda
-yalnızca demonun derlenmiş dosyaları bulunur.
+**Nerede duruyor?** Kod ve demo `FARO-RESTUREND-AND-COFFE` deposundadır. `main` dalına her gönderimde (push)
+GitHub demoyu kendiliğinden derleyip bu linkte yayınlar (`.github/workflows/deploy-demo.yml`).
 
-**Demoyu güncellemek:** Sistemde bir değişiklik yaptıktan sonra **`demo-yayinla.cmd`** dosyasına çift tıklayın.
-Demo derlenir ve `faro-demo` deposuna gönderilir; link birkaç dakika içinde güncellenir.
+**Demoyu güncellemek:** Değişiklikleri GitHub'a göndermeniz yeterli; link birkaç dakika içinde güncellenir.
+(İsterseniz demoyu ayrı bir `faro-demo` deposunda da yayınlayabilirsiniz: `demo-yayinla.cmd`.)
 
-**İletişim / Satın al düğmesi (isteğe bağlı):** Demoda WhatsApp veya e-posta düğmesi göstermek isterseniz
-`demo-yayinla.cmd --contact https://wa.me/905xxxxxxxxx` şeklinde çalıştırın (ya da Claude'a numaranızı söyleyin).
+**İletişim / Satın al düğmesi (isteğe bağlı):** GitHub → depo → Settings → Secrets and variables → Actions →
+Variables → `DEMO_CONTACT_URL` = `https://wa.me/905xxxxxxxxx` (ya da Claude'a numaranızı söyleyin).
 
 ---
 
@@ -87,9 +87,9 @@ başlatır. Müşteri kurulumunda aynı işi `Otomatik-Baslat.cmd` yapar.
 
 ## 7. Sınırlamalar ve öneriler
 
-- **Kaynak kod deposunu gizli (private) tutun.** Kod herkese açık olursa bilgili biri indirip lisans kontrolünü
-  kaldırabilir. (Depo daha önce birkaç gün herkese açıktı; o sürede eski sürümü indiren olmuş olabilir. Yeni
-  eklenen lisans sistemi ve sonraki tüm geliştirmeler yalnızca gizli depodadır.)
+- **Kaynak kod herkese açık.** Kod `FARO-RESTUREND-AND-COFFE` deposunda herkese açık durduğu için bilgili biri
+  indirip lisans kontrolünü kaldırabilir. Bunu önlemek için depoyu gizli (private) yapıp demoyu ayrı `faro-demo`
+  deposundan yayınlayın (`demo-yayinla.cmd`); ücretsiz planda gizli depolar GitHub Pages ile yayınlanamaz.
 - Müşteriye her zaman `paket-olustur.cmd` ile hazırlanan **derlenmiş paketi** verin, kaynak kodu değil.
 - Tarayıcı demosunda her cihazın verisi ayrıdır: telefonda verilen demo sipariş bilgisayardaki demoda görünmez.
   Gerçek kurulumda tüm cihazlar aynı sunucuya bağlanır ve her şey canlı görünür.

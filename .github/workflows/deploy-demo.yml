@@ -1,0 +1,63 @@
+name: Deploy live demo to GitHub Pages
+
+# Builds the browser demo (the API runs inside the page, no server needed) and publishes it at
+# https://<owner>.github.io/<repository>/ on every push to main.
+# One-time: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# Optional "Bize ulaşın" button: Settings → Secrets and variables → Actions → Variables → DEMO_CONTACT_URL
+# (e.g. https://wa.me/905xxxxxxxxx).
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build the demo
+        working-directory: frontend
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_DEMO_CONTACT_URL: ${{ vars.DEMO_CONTACT_URL }}
+        run: |
+          npm run build:demo
+          # Deep links (a table's QR menu, /dashboard …) are answered by the single-page app via the 404 page.
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
