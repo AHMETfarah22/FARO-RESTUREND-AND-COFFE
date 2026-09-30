@@ -79,11 +79,11 @@ Yeni sürüm için yine `paket-olustur.cmd` çalıştırın. Müşteride yalnız
 ## 6. Kendi bilgisayarınız
 
 Geliştirme bilgisayarınıza süresiz bir lisans kuruldu (lisans no `L-CDB638FB`), `start.cmd` her zamanki gibi çalışır.
+Başka bir bilgisayarda geliştirirseniz, orada çıkan makine kodu için `lisans-olustur.cmd` ile anahtar üretin.
 
 **Her zaman açık olsun:** `otomatik-baslat.cmd` dosyasına çift tıklayıp `A` yazın; FARO bilgisayar her açıldığında
 kendiliğinden başlar. `start.cmd` pencereleri simge durumunda açılır ve sunucu durursa birkaç saniyede kendini yeniden
 başlatır. Müşteri kurulumunda aynı işi `Otomatik-Baslat.cmd` yapar.
-Başka bir bilgisayarda geliştirirseniz, orada çıkan makine kodu için `lisans-olustur.cmd` ile anahtar üretin.
 
 ## 7. Sınırlamalar ve öneriler
 
